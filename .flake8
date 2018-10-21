@@ -1,0 +1,9 @@
+[flake8]
+max-line-length=120
+exclude=README.md,
+    # No need to check git-related items
+    .git,.gitignore
+    # No need to check config files
+    Makefile
+    # Exclude packages
+    requirements.txt, site-packages

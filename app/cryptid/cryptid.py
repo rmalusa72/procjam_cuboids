@@ -1,26 +1,38 @@
 from app.cryptid.torso import Torso
+from app.cryptid.appendage import Appendage
 
 class Cryptid:
 
-    # Color = color across all body parts
-    # Bodyparts = list of body parts.
-    # Note that their connection structure is reflected in ports/parents, & the order of this list is arbitrary
-    # Coords = 2xn array of coords for body parts, in same order as above
-
-    def __init__(self, color, thorax=Torso(), orientation):
+    def __init__(self, color, orientation, thorax=Torso()):
         self.color = color
         self.thorax = thorax
         self.orientation = orientation
-        self.coords = None
+        self.getCoords()
 
-    def derive_coords(self):
-        return None
+    # Updates body_list, coords, and num_bodyparts for current state
+    # Body_list = arbitrarily ordered list of body parts generated as-needed
+    # Coords = list of (x,y) coords in same order as above
+    def getCoords(self):
+        self.body_list = []
+        self.coords = []
+        self.getCoords_rec(self.thorax, (0,0))
+        self.num_bodyparts = len(self.body_list)
 
-    def rotate(steps):
-        # Use matrix multiplication on coordinates matrix to rotate the creature
-        return None
+    def getCoords_rec(self, bodypart, current_coords):
+        if bodypart and not (bodypart in self.body_list): 
+            self.body_list.append(bodypart)
+            self.coords.append(current_coords)
 
-    def makeSprite():
+            if isinstance(bodypart, Torso):
+                self.getCoords_rec(bodypart.head, (current_coords[0], current_coords[1] + 1))
+                self.getCoords_rec(bodypart.right, (current_coords[0] + 1, current_coords[1]))
+                self.getCoords_rec(bodypart.tail, (current_coords[0], current_coords[1] - 1))
+                self.getCoords_rec(bodypart.left, (current_coords[0] - 1, current_coords[1]))
+
+    def rotate(self, newOrientation):
+        self.orientation = newOrientation
+
+    def makeSprite(self):
         # Generate sprite from bodyparts and coords
         # To render legs & heads we are going to need to check their position relative to their parent
         # (Or else store which way they are facing and update it when the creature rotates)

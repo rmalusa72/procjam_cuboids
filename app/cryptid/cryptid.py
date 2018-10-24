@@ -1,9 +1,12 @@
+import numpy as np
 from app.cryptid.torso import Torso
 from app.cryptid.appendage import Appendage
 
+rot90 = np.array([[0,-1],[1,0]])
+
 class Cryptid:
 
-    def __init__(self, color, orientation, thorax=Torso()):
+    def __init__(self, color, orientation=np.array([[0],[1]]), thorax=Torso()):
         self.color = color
         self.thorax = thorax
         self.orientation = orientation
@@ -15,7 +18,7 @@ class Cryptid:
     def getCoords(self):
         self.body_list = []
         self.coords = []
-        self.getCoords_rec(self.thorax, (0,0))
+        self.getCoords_rec(self.thorax, np.array([[0],[0]]))
         self.num_bodyparts = len(self.body_list)
 
     def getCoords_rec(self, bodypart, current_coords):
@@ -24,13 +27,14 @@ class Cryptid:
             self.coords.append(current_coords)
 
             if isinstance(bodypart, Torso):
-                self.getCoords_rec(bodypart.head, (current_coords[0], current_coords[1] + 1))
-                self.getCoords_rec(bodypart.right, (current_coords[0] + 1, current_coords[1]))
-                self.getCoords_rec(bodypart.tail, (current_coords[0], current_coords[1] - 1))
-                self.getCoords_rec(bodypart.left, (current_coords[0] - 1, current_coords[1]))
+                self.getCoords_rec(bodypart.head, current_coords + self.orientation)
+                self.getCoords_rec(bodypart.right, current_coords - rot90 @ self.orientation)
+                self.getCoords_rec(bodypart.tail, current_coords - self.orientation)
+                self.getCoords_rec(bodypart.left, current_coords + rot90 @ self.orientation)
 
     def rotate(self, newOrientation):
         self.orientation = newOrientation
+        self.getCoords()
 
     def makeSprite(self):
         # Generate sprite from bodyparts and coords

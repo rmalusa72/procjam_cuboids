@@ -1,4 +1,4 @@
-.PHONY: help run test install
+.PHONY: help run test install autorun
 
 default: help
 
@@ -16,6 +16,8 @@ install: ## Install the app's dependencies
 run: ## Run app locally
 				python3 app/main.py
 
-test: ## Run app's tests 
-				pytest
+autorun: ## Run app locally and restart when app files change
+				bin/guard --path ./app/ --command make run
 
+test: ## Run app's tests
+				pytest

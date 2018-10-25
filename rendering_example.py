@@ -21,6 +21,9 @@ sasquatch.thorax.left.head = Head("app/cryptid/assets/head1", np.array([[0],[-1]
 # Add a limb
 sasquatch.thorax.left.tail = Limb("app/cryptid/assets/leg1_", np.array([[-1],[0]]), np.array([[0],[-1]]))
 
+# Add a limb
+sasquatch.thorax.right = Limb("app/cryptid/assets/leg1_", np.array([[0],[1]]), np.array([[1],[0]]))
+
 # Update coordinates
 sasquatch.getCoords()
 

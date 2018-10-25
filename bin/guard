@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+import os
+from time import sleep
+from argparse import ArgumentParser, REMAINDER
+from subprocess import Popen, DEVNULL
+from signal import SIGKILL
+from watchdog.observers import Observer
+from watchdog.events import RegexMatchingEventHandler
+
+
+REGEXES = [r'.+\.py$']
+DESCRIPTION = 'Watch for fs events and restart command.'
+CYAN = "\033[36m"
+RESET = "\033[0m"
+
+running_process = None
+
+
+class Reloader(RegexMatchingEventHandler):
+    def __init__(self, command, regexes=[], ignore_regexes=[], ignore_directories=True, case_sensitive=False):
+        RegexMatchingEventHandler.__init__(self,
+                                           regexes=regexes,
+                                           ignore_regexes=ignore_regexes,
+                                           ignore_directories=ignore_directories,
+                                           case_sensitive=case_sensitive)
+        self.command = command
+
+    def on_any_event(self, event):
+        try:
+            print(f"{CYAN}RESTARTING: {event.src_path} was edited{RESET}")
+            self.restart()
+        except Exception as exception:
+            print(exception)
+
+    def restart(self):
+        global running_process
+        self.kill_process()
+        running_process = Popen(self.command, start_new_session=True)
+
+
+    def kill_process(self):
+        global running_process
+        if running_process is not None:
+            # kills the process group so as not to generate zombies
+            try:
+                os.killpg(running_process.pid, SIGKILL)
+                running_process = None
+            except PermissionError: # Indicates that the process failed
+                pass
+
+
+class GuardParser(ArgumentParser):
+    def __init__(self):
+        ArgumentParser.__init__(self, description=DESCRIPTION)
+        self.add_argument('--path', '-p', nargs=1, default='.', help='The path to guard.')
+        self.add_argument('--command', '-c', nargs=REMAINDER, required=True, help='The command to be run on fs event.')
+
+    def parse(self):
+        return self.parse_args()
+
+
+if __name__ == "__main__":
+    args = GuardParser().parse()
+    event_handler = Reloader(args.command, regexes=REGEXES)
+    event_handler.restart()
+    observer = Observer()
+    observer.schedule(event_handler, args.path[0], recursive=True)
+    observer.start()
+    try:
+        while True:
+            sleep(1)
+    except KeyboardInterrupt:
+        event_handler.kill_process()
+        observer.stop()
+    observer.join()

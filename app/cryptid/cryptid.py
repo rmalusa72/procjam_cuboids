@@ -37,7 +37,37 @@ class Cryptid:
         self.getCoords()
 
     def makeSprite(self):
-        # Generate sprite from bodyparts and coords
-        # To render legs & heads we are going to need to check their position relative to their parent
-        # (Or else store which way they are facing and update it when the creature rotates)
-        return None
+        # Work out each body part's relative distance from the camera
+        layers = []
+        min_layer = 0
+        max_layer = 0
+        leftmost = 0
+        rightmost = 0
+        for i in range(0, self.num_bodyparts):
+            layer = self.coords[i][0][0] - self.coords[i][1][0]
+            lateral = self.coords[i][0][0] + self.coords[i][1][0]
+            layers.append(layer)
+            if layer < min_layer:
+                min_layer = layer
+            if layer > max_layer:
+                max_layer = layer
+            if lateral < leftmost:
+                leftmost = lateral
+            if lateral > rightmost:
+                rightmost = lateral
+
+        sprite = pygame.Surface((DEFAULT_TORSO_WIDTH + (rightmost - leftmost)*DEFAULT_TORSO_X_OFFSET, DEFAULT_TORSO_HEIGHT + (max_layer - min_layer)*DEFAULT_TORSO_Y_OFFSET))
+        sprite.set_colorkey((255,0,255))
+        sprite.fill((255,0,255))
+
+        for cur_layer in range(min_layer, max_layer + 1):
+            print(cur_layer)
+            pygame.image.save(sprite, "testsprite" + str(cur_layer) + ".png")
+            y_pos = 0 + (cur_layer - min_layer) * DEFAULT_TORSO_Y_OFFSET
+            for i in range(0, self.num_bodyparts):
+                if layers[i] == cur_layer:
+                    x_pos = 0 + (self.coords[i][0][0] + self.coords[i][1][0] - leftmost) * DEFAULT_TORSO_X_OFFSET
+                    sprite.blit(pygame.image.load(self.body_list[i].asset_type), (x_pos, y_pos))
+
+
+        pygame.image.save(sprite, "testsprite.png")

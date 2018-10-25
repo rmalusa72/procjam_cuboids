@@ -61,8 +61,8 @@ class Cryptid:
         sprite.fill((255,0,255))
 
         for cur_layer in range(min_layer, max_layer + 1):
-            print(cur_layer)
-            pygame.image.save(sprite, "testsprite" + str(cur_layer) + ".png")
+            #print(cur_layer)
+            #pygame.image.save(sprite, "testsprite" + str(cur_layer) + ".png")
             y_pos = 0 + (cur_layer - min_layer) * DEFAULT_TORSO_Y_OFFSET
             for i in range(0, self.num_bodyparts):
                 if layers[i] == cur_layer:
@@ -70,4 +70,5 @@ class Cryptid:
                     sprite.blit(pygame.image.load(self.body_list[i].asset_type), (x_pos, y_pos))
 
 
-        pygame.image.save(sprite, "testsprite.png")
+        #pygame.image.save(sprite, "testsprite.png")
+        return sprite

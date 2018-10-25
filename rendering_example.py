@@ -1,5 +1,6 @@
 from app.cryptid.cryptid import Cryptid
 from app.cryptid.torso import Torso
+from app.cryptid.appendage import Head, Limb
 import pygame
 import numpy as np
 
@@ -13,6 +14,12 @@ sasquatch.thorax.head.tail = sasquatch.thorax.head # Doubly linked
 # Add another cube to the side
 sasquatch.thorax.left = Torso()
 sasquatch.thorax.left.right = sasquatch.thorax.left # Doubly linked
+
+# Add a head
+sasquatch.thorax.left.head = Head("app/cryptid/assets/head1", np.array([[0],[-1]]))
+
+# Add a limb
+sasquatch.thorax.left.tail = Limb("app/cryptid/assets/leg1_", np.array([[-1],[0]]), np.array([[0],[-1]]))
 
 # Update coordinates
 sasquatch.getCoords()

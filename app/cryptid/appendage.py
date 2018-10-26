@@ -7,6 +7,7 @@ class Head:
         self.asset_type = asset_type
         self.orientation = orientation
 
+
 class Limb:
 
     # asset_type = collection of assets that represent different permutations of the same asset

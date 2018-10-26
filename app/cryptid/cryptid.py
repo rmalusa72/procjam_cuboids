@@ -1,7 +1,7 @@
 import numpy as np
 import pygame
 from app.cryptid.torso import Torso
-from app.cryptid.assets import *
+from app.assets import *
 from app.cryptid.appendage import Head, Limb
 
 
@@ -62,22 +62,25 @@ class Cryptid:
             if lateral > rightmost:
                 rightmost = lateral
 
-        sprite = pygame.Surface((DEFAULT_TORSO_WIDTH + (rightmost - leftmost)*DEFAULT_TORSO_X_OFFSET, DEFAULT_TORSO_HEIGHT + (max_layer - min_layer)*DEFAULT_TORSO_Y_OFFSET))
-        sprite.set_colorkey((255,0,255))
-        sprite.fill((255,0,255))
+        num = (DEFAULT_TORSO_WIDTH + (rightmost - leftmost)*DEFAULT_TORSO_X_OFFSET,
+               DEFAULT_TORSO_HEIGHT + (max_layer - min_layer)*DEFAULT_TORSO_Y_OFFSET)
+        sprite = pygame.Surface(num)
+        sprite.set_colorkey((255, 0, 255))
+        sprite.fill((255, 0, 255))
 
         for cur_layer in range(min_layer, max_layer + 1):
-            #print(cur_layer)
-            #pygame.image.save(sprite, "testsprite" + str(cur_layer) + ".png")
+            # print(cur_layer)
+            # pygame.image.save(sprite, "testsprite" + str(cur_layer) + ".png")
             y_pos = 0 + (cur_layer - min_layer) * DEFAULT_TORSO_Y_OFFSET
             for i in range(0, self.num_bodyparts):
                 if layers[i] == cur_layer:
                     x_pos = 0 + (self.coords[i][0][0] + self.coords[i][1][0] - leftmost) * DEFAULT_TORSO_X_OFFSET
-                    sprite.blit(pygame.image.load(getBodypartSprite(self.body_list[i], self.orientation)), (x_pos, y_pos))
+                    sprite.blit(pygame.image.load(getBodypartSprite(self.body_list[i], self.orientation)),
+                                (x_pos, y_pos))
 
-
-        #pygame.image.save(sprite, "testsprite.png")
+        # pygame.image.save(sprite, "testsprite.png")
         return sprite
+
 
 def getBodypartSprite(bodypart, creature_orientation):
 

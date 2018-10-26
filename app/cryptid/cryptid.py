@@ -8,9 +8,9 @@ from app.cryptid.appendage import Head, Limb
 DEFAULT_THORAX_COORD = np.array([[0], [0]])
 
 class Cryptid:
-    def __init__(self, color, orientation=np.array([[0], [1]]), thorax=Torso()):
+    def __init__(self, color, orientation=np.array([[0], [1]])):
         self.color = color
-        self.thorax = thorax
+        self.thorax = Torso()
         self.orientation = orientation
         self.body_list = []
         self.coords = []

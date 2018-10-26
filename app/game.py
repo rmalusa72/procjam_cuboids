@@ -13,6 +13,7 @@ SCREEN_SIZE = (1000, 700)
 ##
 event_manager = None
 gfx = None
+cryptid_manager = None
 
 ##
 # clock info

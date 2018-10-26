@@ -5,24 +5,33 @@ from app.assets import *
 from app.cryptid.appendage import Head, Limb
 
 
-class Cryptid:
+DEFAULT_THORAX_COORD = np.array([[0], [0]])
 
+class Cryptid:
     def __init__(self, color, orientation=np.array([[0], [1]]), thorax=Torso()):
         self.color = color
         self.thorax = thorax
         self.orientation = orientation
-        self.getCoords()
+        self.body_list = []
+        self.coords = []
+        self.num_bodyparts = 1
+        self.updateCoords()
+        self.sprite = None
+
+    def getCoords(self):
+        self.updateCoords()
+        return self.coords
 
     # Updates body_list, coords, and num_bodyparts for current state
     # Body_list = arbitrarily ordered list of body parts generated as-needed
     # Coords = list of (x,y) coords in same order as above
-    def getCoords(self):
+    def updateCoords(self):
         self.body_list = []
         self.coords = []
-        self.getCoords_rec(self.thorax, np.array([[0], [0]]))
+        self._updateCoords(self.thorax, DEFAULT_THORAX_COORD)
         self.num_bodyparts = len(self.body_list)
 
-    def getCoords_rec(self, bodypart, current_coords):
+    def _updateCoords(self, bodypart, current_coords):
         if bodypart and not (bodypart in self.body_list):
             self.body_list.append(bodypart)
 
@@ -33,16 +42,17 @@ class Cryptid:
             self.coords.append(current_coords)
 
             if isinstance(bodypart, Torso):
-                self.getCoords_rec(bodypart.head, current_coords + self.orientation)
-                self.getCoords_rec(bodypart.right, current_coords - ROT90 @ self.orientation)
-                self.getCoords_rec(bodypart.tail, current_coords - self.orientation)
-                self.getCoords_rec(bodypart.left, current_coords + ROT90 @ self.orientation)
+                self._updateCoords(bodypart.head, current_coords + self.orientation)
+                self._updateCoords(bodypart.right, current_coords - ROT90 @ self.orientation)
+                self._updateCoords(bodypart.tail, current_coords - self.orientation)
+                self._updateCoords(bodypart.left, current_coords + ROT90 @ self.orientation)
 
     def rotate(self, newOrientation):
         self.orientation = newOrientation
-        self.getCoords()
+        self.updateCoords()
 
     def makeSprite(self):
+        self.updateCoords()
         # Work out each body part's relative distance from the camera
         layers = []
         min_layer = 0
@@ -79,6 +89,7 @@ class Cryptid:
                                 (x_pos, y_pos))
 
         # pygame.image.save(sprite, "testsprite.png")
+        self.sprite = sprite
         return sprite
 
 

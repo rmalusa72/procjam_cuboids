@@ -7,3 +7,5 @@ exclude=README.md,
     Makefile
     # Exclude packages
     requirements.txt, site-packages
+    # Exclude tests
+    tests

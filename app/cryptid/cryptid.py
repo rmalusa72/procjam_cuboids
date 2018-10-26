@@ -3,9 +3,16 @@ import pygame
 from app.cryptid.torso import Torso
 from app.assets import *
 from app.cryptid.appendage import Head, Limb
+import random
 
 
 DEFAULT_THORAX_COORD = np.array([[0], [0]])
+
+def nparray_in_list(nparray, nparraylist):
+    for element in nparraylist:
+        if np.array_equal(element, nparray):
+            return True
+    return False
 
 class Cryptid:
     def __init__(self, color, orientation=np.array([[0], [1]])):
@@ -17,6 +24,44 @@ class Cryptid:
         self.num_bodyparts = 1
         self.updateCoords()
         self.sprite = None
+
+    def randomize(self, max_torsos):
+        self.thorax = Torso()
+        self.max_torsos = max_torsos
+        coords_filled = [DEFAULT_THORAX_COORD]
+        self._randomize(self.thorax, DEFAULT_THORAX_COORD, coords_filled)
+        self.updateCoords()
+
+    def _randomize(self, current_torso, current_coords, coords_filled):
+        if not self.max_torsos == 0:
+            socket_vectors = [NORTH, EAST, SOUTH, WEST]
+            sockets = [current_torso.head, current_torso.right, current_torso.tail, current_torso.left]
+
+            for i in range(0, len(socket_vectors)):
+                next_coords = current_coords + socket_vectors[i]
+                if not nparray_in_list(next_coords, coords_filled):
+                    # Then corresponding socket is empty
+                    child_class = random.choice([Head, Limb, Torso, None])
+                    if child_class:
+                        
+                        coords_filled.append(next_coords)
+
+                        if child_class == Torso:
+                            self.max_torsos = self.max_torsos - 1 
+                            child = Torso()
+                            child.put_in_socket((i+2)%4, current_torso)
+                            current_torso.put_in_socket(i, child)
+                            self._randomize(child, next_coords, coords_filled)
+
+                        elif child_class == Head:
+                            child = Head(socket_vectors[i])
+                            current_torso.put_in_socket(i, child)
+
+                        elif child_class == Limb:
+                            child = Limb(ROT90 @ socket_vectors[i], socket_vectors[i])
+                            current_torso.put_in_socket(i, child)
+
+
 
     def getCoords(self):
         self.updateCoords()

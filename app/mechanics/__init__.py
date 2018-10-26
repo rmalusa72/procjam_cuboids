@@ -11,5 +11,6 @@ def initialize():
     pygame.init()
     game.event_manager = EventManager()
     game.gfx = GFX()
-    Background.paint()
+    game.gfx.initial_paint()
+    # Background.paint()
     game.event_manager.listen()

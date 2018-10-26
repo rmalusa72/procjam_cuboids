@@ -1,3 +1,5 @@
+# noqa
+
 from app.cryptid.cryptid import Cryptid
 from app.cryptid.torso import Torso
 from app.cryptid.appendage import Head, Limb

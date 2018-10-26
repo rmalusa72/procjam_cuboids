@@ -14,7 +14,7 @@ install: ## Install the app's dependencies
 				pip3 install -r requirements.txt
 
 run: ## Run app locally
-				python3 app/main.py
+				python3 main.py
 
 autorun: ## Run app locally and restart when app files change
 				bin/guard --path ./app/ --command make run

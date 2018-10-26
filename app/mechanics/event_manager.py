@@ -1,17 +1,22 @@
-from mechanics.display_manager import DisplayManager
-import sys
+import pygame
+import app.game as game
+
+##
+# EventManager manages the external input queue (keystrokes, mouse)
+# Note that current position of any device is availible separately
+# EventManager ticks the clock
+##
 
 
 class EventManager:
-    def __init__(self, game):
-        self.game = game
+    def __init__(self):
+        game.clock = pygame.time.Clock()
 
     def listen(self):
-        DisplayManager.initial_paint(self.game)
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
 
-        for event in self.game.event.get():
-            if event.type == self.game.QUIT:
-                sys.exit()
-
-        # probably extract to DisplayManager?
-        self.game.display.flip()
+            game.gfx.update()
+            game.ticks = game.clock.tick(30)

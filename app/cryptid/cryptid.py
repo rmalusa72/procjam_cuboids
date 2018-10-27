@@ -35,7 +35,8 @@ class Cryptid:
         self.updateCoords()
 
     def _randomize(self, current_torso, current_coords, coords_filled):
-        if not self.max_torsos == 0:
+        self.max_torsos = self.max_torsos - 1
+        if self.max_torsos > 0:
             socket_vectors = [NORTH, EAST, SOUTH, WEST]
 
             for i in range(0, len(socket_vectors)):
@@ -48,7 +49,6 @@ class Cryptid:
                         coords_filled.append(next_coords)
 
                         if child_class == Torso:
-                            self.max_torsos = self.max_torsos - 1
                             child = Torso()
                             child.put_in_socket((i+2) % 4, current_torso)
                             current_torso.put_in_socket(i, child)

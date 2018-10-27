@@ -8,11 +8,13 @@ import random
 
 DEFAULT_THORAX_COORD = np.array([[0], [0]])
 
+
 def nparray_in_list(nparray, nparraylist):
     for element in nparraylist:
         if np.array_equal(element, nparray):
             return True
     return False
+
 
 class Cryptid:
     def __init__(self, color, orientation=np.array([[0], [1]])):
@@ -35,7 +37,6 @@ class Cryptid:
     def _randomize(self, current_torso, current_coords, coords_filled):
         if not self.max_torsos == 0:
             socket_vectors = [NORTH, EAST, SOUTH, WEST]
-            sockets = [current_torso.head, current_torso.right, current_torso.tail, current_torso.left]
 
             for i in range(0, len(socket_vectors)):
                 next_coords = current_coords + socket_vectors[i]
@@ -43,13 +44,13 @@ class Cryptid:
                     # Then corresponding socket is empty
                     child_class = random.choice([Head, Limb, Torso, None])
                     if child_class:
-                        
+
                         coords_filled.append(next_coords)
 
                         if child_class == Torso:
-                            self.max_torsos = self.max_torsos - 1 
+                            self.max_torsos = self.max_torsos - 1
                             child = Torso()
-                            child.put_in_socket((i+2)%4, current_torso)
+                            child.put_in_socket((i+2) % 4, current_torso)
                             current_torso.put_in_socket(i, child)
                             self._randomize(child, next_coords, coords_filled)
 
@@ -60,8 +61,6 @@ class Cryptid:
                         elif child_class == Limb:
                             child = Limb(ROT90 @ socket_vectors[i], socket_vectors[i])
                             current_torso.put_in_socket(i, child)
-
-
 
     def getCoords(self):
         self.updateCoords()
@@ -143,6 +142,27 @@ def getBodypartSprite(bodypart, creature_orientation):
     if isinstance(bodypart, Torso):
         return DEFAULT_TORSO
     elif isinstance(bodypart, Head):
+        head_orientation = bodypart.orientation
+        if np.array_equal(creature_orientation, EAST):
+            head_orientation = ROT90 @ head_orientation
+        elif np.array_equal(creature_orientation, SOUTH):
+            head_orientation = ROT180 @ head_orientation
+        elif np.array_equal(creature_orientation, WEST):
+            head_orientation = ROT270 @ head_orientation
+
+        head_assettype = bodypart.asset_type
+
+        if np.array_equal(head_orientation, NORTH):
+            head_assettype = head_assettype + "N"
+        elif np.array_equal(head_orientation, EAST):
+            head_assettype = head_assettype + "E"
+        elif np.array_equal(head_orientation, SOUTH):
+            head_assettype = head_assettype + "S"
+        elif np.array_equal(head_orientation, WEST):
+            head_assettype = head_assettype + "W"
+
+        return head_assettype + ".png"
+
         return "app/cryptid/assets/head1_f.png"
     elif isinstance(bodypart, Limb):
         limb_orientation = bodypart.orientation

@@ -17,6 +17,8 @@ class EventManager:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
+                else:
+                    game.gui.event(event)
 
             game.gfx.update()
             game.ticks = game.clock.tick(30)

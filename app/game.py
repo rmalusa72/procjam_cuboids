@@ -6,7 +6,7 @@
 # Size of the whole screen
 # All resizable dimensions should reference this.
 ##
-SCREEN_SIZE = (1000, 700)
+SCREEN = (1000, 700)
 
 ##
 # current manager class instances
@@ -14,6 +14,7 @@ SCREEN_SIZE = (1000, 700)
 event_manager = None
 gfx = None
 cryptid_manager = None
+gui = None
 
 ##
 # clock info

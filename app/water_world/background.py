@@ -20,6 +20,6 @@ class Background:
 
     @classmethod
     def _draw_ground(cls):
-        rect = pygame.Rect(0, game.SCREEN_SIZE[1]-100, game.SCREEN_SIZE[0], 100)
+        rect = pygame.Rect(0, game.SCREEN[1]-100, game.SCREEN[0], 100)
         pygame.draw.rect(game.gfx.screen, crayons.CALM_BROWN, rect)
         game.gfx.dirty(rect)

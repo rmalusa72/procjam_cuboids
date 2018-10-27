@@ -1,6 +1,6 @@
 import pygame
 from app.assets import CAPTION, NO_GRAPHICS_ERROR
-from app.game import SCREEN_SIZE
+from app.game import SCREEN
 
 ##
 # Handles all paints and updates to graphics
@@ -11,7 +11,7 @@ class GFX:
     def __init__(self):
         self.dirty_rects = []
         try:
-            self.screen = pygame.display.set_mode(SCREEN_SIZE)
+            self.screen = pygame.display.set_mode(SCREEN)
             pygame.display.set_caption(CAPTION)
         except pygame.error:
             raise(pygame.error, NO_GRAPHICS_ERROR)

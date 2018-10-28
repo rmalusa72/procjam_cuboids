@@ -1,25 +1,12 @@
-import numpy as np
 import pygame
 from app.cryptid.torso import Torso
 from app.assets import *
 from app.cryptid.appendage import Head, Limb
-import random
-
-
-DEFAULT_THORAX_COORD = np.array([[0], [0]])
-
-
-def nparray_in_list(nparray, nparraylist):
-    for element in nparraylist:
-        if np.array_equal(element, nparray):
-            return True
-    return False
-
 
 # Gives dest torso deep copies of the children of source torso
 # I'M SO SORRY ABOUT HOW UGLY THIS CODE IS
 def copy_torso_attributes(source, dest, direction_omitted=None):
-        if not np.array_equal(direction_omitted, NORTH):
+        if not array_equal(direction_omitted, NORTH):
             if isinstance(source.head, Torso):
                 dest.head = Torso(source.head.asset_type)
                 copy_torso_attributes(source.head, dest.head, SOUTH)
@@ -27,7 +14,7 @@ def copy_torso_attributes(source, dest, direction_omitted=None):
                 dest.head = Head(source.head.orientation, source.head.asset_type)
             if isinstance(source.head, Limb):
                 dest.head = Limb(source.head.orientation, source.head.shoulder, source.head.asset_type)
-        if not np.array_equal(direction_omitted, EAST):
+        if not array_equal(direction_omitted, EAST):
             if isinstance(source.right, Torso):
                 dest.right = Torso(source.right.asset_type)
                 copy_torso_attributes(source.right, dest.right, WEST)
@@ -35,7 +22,7 @@ def copy_torso_attributes(source, dest, direction_omitted=None):
                 dest.right = Head(source.right.orientation, source.right.asset_type)
             if isinstance(source.right, Limb):
                 dest.right = Limb(source.right.orientation, source.right.shoulder, source.right.asset_type)
-        if not np.array_equal(direction_omitted, SOUTH):
+        if not array_equal(direction_omitted, SOUTH):
             if isinstance(source.tail, Torso):
                 dest.tail = Torso(source.tail.asset_type)
                 copy_torso_attributes(source.tail, dest.tail, NORTH)
@@ -43,7 +30,7 @@ def copy_torso_attributes(source, dest, direction_omitted=None):
                 dest.tail = Head(source.tail.orientation, source.tail.asset_type)
             if isinstance(source.tail, Limb):
                 dest.tail = Limb(source.tail.orientation, source.tail.shoulder, source.tail.asset_type)
-        if not np.array_equal(direction_omitted, WEST):
+        if not array_equal(direction_omitted, WEST):
             if isinstance(source.left, Torso):
                 dest.left = Torso(source.left.asset_type)
                 copy_torso_attributes(source.left, dest.left, EAST)
@@ -54,7 +41,7 @@ def copy_torso_attributes(source, dest, direction_omitted=None):
 
 
 class Cryptid:
-    def __init__(self, color, orientation=np.array([[0], [1]])):
+    def __init__(self, color, orientation=array([[0], [1]])):
         self.color = color
         self.thorax = Torso()
         self.orientation = orientation
@@ -135,20 +122,20 @@ class Cryptid:
             # print("dir: " + str(connection_direction))
 
             # Figure out what coordinates are occupied by semi-cryptids when aligned and attached
-            parent1partialcoords = [np.array([[0],[0]])]
-            parent2partialcoords = [np.copy(connection_direction)]
-            if not np.array_equal(connection_direction, NORTH):
+            parent1partialcoords = [array([[0],[0]])]
+            parent2partialcoords = [copy(connection_direction)]
+            if not array_equal(connection_direction, NORTH):
                 self._getPartialCoords(parent1_connection_point.head, [parent1_connection_point], NORTH, parent1partialcoords)
                 self._getPartialCoords(parent2_connection_point.tail, [parent2_connection_point], SOUTH, parent2partialcoords)
-            if not np.array_equal(connection_direction, EAST):
+            if not array_equal(connection_direction, EAST):
                 self._getPartialCoords(parent1_connection_point.right, [parent1_connection_point], EAST, parent1partialcoords)
                 self._getPartialCoords(parent2_connection_point.left, [parent2_connection_point], WEST, parent2partialcoords)
-            if not np.array_equal(connection_direction, SOUTH):
+            if not array_equal(connection_direction, SOUTH):
                 self._getPartialCoords(parent1_connection_point.tail, [parent1_connection_point], SOUTH, parent1partialcoords)
                 self._getPartialCoords(parent2_connection_point.head, [parent2_connection_point], NORTH, parent2partialcoords)
-            if not np.array_equal(connection_direction, WEST):
+            if not array_equal(connection_direction, WEST):
                 self._getPartialCoords(parent1_connection_point.left, [parent1_connection_point], WEST, parent1partialcoords)
-                self._getPartialCoords(parent2_connection_point.right, [parent2_connection_point], EAST, parent2partialcoords)           
+                self._getPartialCoords(parent2_connection_point.right, [parent2_connection_point], EAST, parent2partialcoords)
 
             # print("parent1 partial coords: " + str(parent1partialcoords))
             # print("parent2 partial coords: " + str(parent2partialcoords))
@@ -165,7 +152,7 @@ class Cryptid:
             # Look for duplicate coordinates
             for coord1 in parent1partialcoords:
                 for coord2 in parent2partialcoords:
-                    if np.array_equal(coord1, coord2):
+                    if array_equal(coord1, coord2):
                         coord_conflict = True
 
             if coord_conflict:
@@ -184,16 +171,16 @@ class Cryptid:
             copy_torso_attributes(parent1_connection_point, baby.thorax, connection_direction)
             copy_torso_attributes(parent2_connection_point, parent2_half_copy, ROT180 @ connection_direction)
 
-            if np.array_equal(connection_direction, NORTH):
+            if array_equal(connection_direction, NORTH):
                 baby.thorax.head = parent2_half_copy
                 parent2_half_copy.tail = baby.thorax
-            if np.array_equal(connection_direction, EAST):
+            if array_equal(connection_direction, EAST):
                 baby.thorax.right = parent2_half_copy
                 parent2_half_copy.left = baby.thorax
-            if np.array_equal(connection_direction, SOUTH):
+            if array_equal(connection_direction, SOUTH):
                 baby.thorax.tail = parent2_half_copy
                 parent2_half_copy.head = baby.thorax
-            if np.array_equal(connection_direction, WEST):
+            if array_equal(connection_direction, WEST):
                 baby.thorax.left = parent2_half_copy
                 parent2_half_copy.right = baby.thorax
 
@@ -293,22 +280,22 @@ def getBodypartSprite(bodypart, creature_orientation):
         return DEFAULT_TORSO
     elif isinstance(bodypart, Head):
         head_orientation = bodypart.orientation
-        if np.array_equal(creature_orientation, EAST):
+        if array_equal(creature_orientation, EAST):
             head_orientation = ROT90 @ head_orientation
-        elif np.array_equal(creature_orientation, SOUTH):
+        elif array_equal(creature_orientation, SOUTH):
             head_orientation = ROT180 @ head_orientation
-        elif np.array_equal(creature_orientation, WEST):
+        elif array_equal(creature_orientation, WEST):
             head_orientation = ROT270 @ head_orientation
 
         head_assettype = bodypart.asset_type
 
-        if np.array_equal(head_orientation, NORTH):
+        if array_equal(head_orientation, NORTH):
             head_assettype = head_assettype + "N"
-        elif np.array_equal(head_orientation, EAST):
+        elif array_equal(head_orientation, EAST):
             head_assettype = head_assettype + "E"
-        elif np.array_equal(head_orientation, SOUTH):
+        elif array_equal(head_orientation, SOUTH):
             head_assettype = head_assettype + "S"
-        elif np.array_equal(head_orientation, WEST):
+        elif array_equal(head_orientation, WEST):
             head_assettype = head_assettype + "W"
 
         return head_assettype + ".png"
@@ -319,13 +306,13 @@ def getBodypartSprite(bodypart, creature_orientation):
         limb_shoulder = bodypart.shoulder
 
         # Update relative orientation vectors to absolute orientation vectors
-        if np.array_equal(creature_orientation, EAST):
+        if array_equal(creature_orientation, EAST):
             limb_orientation = ROT90 @ limb_orientation
             limb_shoulder = ROT90 @ limb_shoulder
-        elif np.array_equal(creature_orientation, SOUTH):
+        elif array_equal(creature_orientation, SOUTH):
             limb_orientation = ROT180 @ limb_orientation
             limb_shoulder = ROT180 @ limb_shoulder
-        elif np.array_equal(creature_orientation, WEST):
+        elif array_equal(creature_orientation, WEST):
             limb_orientation = ROT270 @ limb_orientation
             limb_shoulder = ROT270 @ limb_shoulder
 
@@ -333,22 +320,22 @@ def getBodypartSprite(bodypart, creature_orientation):
         limb_assettype = bodypart.asset_type
 
         # Is there an easier way to get a sprite by limb and shoulder orientation .. a grid?
-        if np.array_equal(limb_orientation, NORTH):
+        if array_equal(limb_orientation, NORTH):
             limb_assettype = limb_assettype + "N"
-        elif np.array_equal(limb_orientation, EAST):
+        elif array_equal(limb_orientation, EAST):
             limb_assettype = limb_assettype + "E"
-        elif np.array_equal(limb_orientation, SOUTH):
+        elif array_equal(limb_orientation, SOUTH):
             limb_assettype = limb_assettype + "S"
-        elif np.array_equal(limb_orientation, WEST):
+        elif array_equal(limb_orientation, WEST):
             limb_assettype = limb_assettype + "W"
 
-        if np.array_equal(limb_shoulder, NORTH):
+        if array_equal(limb_shoulder, NORTH):
             limb_assettype = limb_assettype + "N"
-        elif np.array_equal(limb_shoulder, EAST):
+        elif array_equal(limb_shoulder, EAST):
             limb_assettype = limb_assettype + "E"
-        elif np.array_equal(limb_shoulder, SOUTH):
+        elif array_equal(limb_shoulder, SOUTH):
             limb_assettype = limb_assettype + "S"
-        elif np.array_equal(limb_shoulder, WEST):
+        elif array_equal(limb_shoulder, WEST):
             limb_assettype = limb_assettype + "W"
 
         return limb_assettype + ".png"

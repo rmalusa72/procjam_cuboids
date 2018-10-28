@@ -16,6 +16,43 @@ def nparray_in_list(nparray, nparraylist):
     return False
 
 
+# Gives dest torso deep copies of the children of source torso
+# I'M SO SORRY ABOUT HOW UGLY THIS CODE IS
+def copy_torso_attributes(source, dest, direction_omitted=None):
+        if not np.array_equal(direction_omitted, NORTH):
+            if isinstance(source.head, Torso):
+                dest.head = Torso(source.head.asset_type)
+                copy_torso_attributes(source.head, dest.head, SOUTH)
+            if isinstance(source.head, Head):
+                dest.head = Head(source.head.orientation, source.head.asset_type)
+            if isinstance(source.head, Limb):
+                dest.head = Limb(source.head.orientation, source.head.shoulder, source.head.asset_type)
+        if not np.array_equal(direction_omitted, EAST):
+            if isinstance(source.right, Torso):
+                dest.right = Torso(source.right.asset_type)
+                copy_torso_attributes(source.right, dest.right, WEST)
+            if isinstance(source.right, Head):
+                dest.right = Head(source.right.orientation, source.right.asset_type)
+            if isinstance(source.right, Limb):
+                dest.right = Limb(source.right.orientation, source.right.shoulder, source.right.asset_type)
+        if not np.array_equal(direction_omitted, SOUTH):
+            if isinstance(source.tail, Torso):
+                dest.tail = Torso(source.tail.asset_type)
+                copy_torso_attributes(source.tail, dest.tail, NORTH)
+            if isinstance(source.tail, Head):
+                dest.tail = Head(source.tail.orientation, source.tail.asset_type)
+            if isinstance(source.tail, Limb):
+                dest.tail = Limb(source.tail.orientation, source.tail.shoulder, source.tail.asset_type)
+        if not np.array_equal(direction_omitted, WEST):
+            if isinstance(source.left, Torso):
+                dest.left = Torso(source.left.asset_type)
+                copy_torso_attributes(source.left, dest.left, EAST)
+            if isinstance(source.left, Head):
+                dest.left = Head(source.left.orientation, source.left.asset_type)
+            if isinstance(source.left, Limb):
+                dest.left = Limb(source.left.orientation, source.left.shoulder, source.left.asset_type)
+
+
 class Cryptid:
     def __init__(self, color, orientation=np.array([[0], [1]])):
         self.color = color
@@ -41,10 +78,10 @@ class Cryptid:
             next_coords = current_coords + socket_vectors[i]
             if not nparray_in_list(next_coords, coords_filled):
                 # Then corresponding socket is empty
-                if self.torsos_left > 0: 
-                    options = [Head, Limb, Torso, None]
+                if self.torsos_left > 0:
+                    options = [Head, Limb, Torso, Torso, None, None]
                 else:
-                    options = [Head, Limb, None]
+                    options = [Head, Limb, None, None]
                 child_class = random.choice(options)
                 if child_class:
 
@@ -64,6 +101,116 @@ class Cryptid:
                     elif child_class == Limb:
                         child = Limb(ROT90 @ socket_vectors[i], socket_vectors[i])
                         current_torso.put_in_socket(i, child)
+
+    # Tries for baby 50 times, returns False if no success
+    def reproduce(self, other):
+        # Instantiate baby and modifiable copies of parents (to preserve originals)
+        baby = Cryptid(random.choice([self.color, other.color]))
+        babysuccess = False
+        babytries = 0
+
+        parent1 = self
+        parent2 = other
+        parent1.updateCoords()
+        parent2.updateCoords()
+
+        while not babysuccess:
+            # pick one torso from each parent to attempt to connect
+            parent1_connection_point = None
+            while not isinstance(parent1_connection_point, Torso):
+                parent1_connection_point = random.choice(parent1.body_list)
+
+            # print("parent1 coords: ")
+            # print("parent1 point: " + str(parent1.coords[parent1.body_list.index(parent1_connection_point)]))
+
+            parent2_connection_point = None
+            while not isinstance(parent2_connection_point, Torso):
+                parent2_connection_point = random.choice(parent2.body_list)
+
+            # print("parent2 point: " + str(parent2.coords[parent2.body_list.index(parent2_connection_point)]))
+
+            # pick a direction to attempt to connect them (vector from parent1 torso to parent2 torso)
+            connection_direction = random.choice([NORTH, EAST, SOUTH, WEST])
+
+            # print("dir: " + str(connection_direction))
+
+            # Figure out what coordinates are occupied by semi-cryptids when aligned and attached
+            parent1partialcoords = [np.array([[0],[0]])]
+            parent2partialcoords = [np.copy(connection_direction)]
+            if not np.array_equal(connection_direction, NORTH):
+                self._getPartialCoords(parent1_connection_point.head, [parent1_connection_point], NORTH, parent1partialcoords)
+                self._getPartialCoords(parent2_connection_point.tail, [parent2_connection_point], SOUTH, parent2partialcoords)
+            if not np.array_equal(connection_direction, EAST):
+                self._getPartialCoords(parent1_connection_point.right, [parent1_connection_point], EAST, parent1partialcoords)
+                self._getPartialCoords(parent2_connection_point.left, [parent2_connection_point], WEST, parent2partialcoords)
+            if not np.array_equal(connection_direction, SOUTH):
+                self._getPartialCoords(parent1_connection_point.tail, [parent1_connection_point], SOUTH, parent1partialcoords)
+                self._getPartialCoords(parent2_connection_point.head, [parent2_connection_point], NORTH, parent2partialcoords)
+            if not np.array_equal(connection_direction, WEST):
+                self._getPartialCoords(parent1_connection_point.left, [parent1_connection_point], WEST, parent1partialcoords)
+                self._getPartialCoords(parent2_connection_point.right, [parent2_connection_point], EAST, parent2partialcoords)           
+
+            # print("parent1 partial coords: " + str(parent1partialcoords))
+            # print("parent2 partial coords: " + str(parent2partialcoords))
+
+            # test1 = Cryptid(1)
+            # test2 = Cryptid(2)
+            # copy_torso_attributes(parent1_connection_point, test1.thorax, connection_direction)
+            # copy_torso_attributes(parent2_connection_point, test2.thorax, ROT180 @ connection_direction)
+            # pygame.image.save(test1.makeSprite(), "test1.png")
+            # pygame.image.save(test2.makeSprite(), "test2.png")
+
+            coord_conflict = False
+
+            # Look for duplicate coordinates
+            for coord1 in parent1partialcoords:
+                for coord2 in parent2partialcoords:
+                    if np.array_equal(coord1, coord2):
+                        coord_conflict = True
+
+            if coord_conflict:
+                # print("Fuckt up baby ):")
+                babytries = babytries + 1
+                if babytries >= 50:
+                    return False
+                continue
+
+            # If no coordinate conflict then we can proceed in constructing the baby
+            babysuccess = True
+            # print("Baby !!")
+
+            parent2_half_copy = Torso(parent2_connection_point.asset_type)
+
+            copy_torso_attributes(parent1_connection_point, baby.thorax, connection_direction)
+            copy_torso_attributes(parent2_connection_point, parent2_half_copy, ROT180 @ connection_direction)
+
+            if np.array_equal(connection_direction, NORTH):
+                baby.thorax.head = parent2_half_copy
+                parent2_half_copy.tail = baby.thorax
+            if np.array_equal(connection_direction, EAST):
+                baby.thorax.right = parent2_half_copy
+                parent2_half_copy.left = baby.thorax
+            if np.array_equal(connection_direction, SOUTH):
+                baby.thorax.tail = parent2_half_copy
+                parent2_half_copy.head = baby.thorax
+            if np.array_equal(connection_direction, WEST):
+                baby.thorax.left = parent2_half_copy
+                parent2_half_copy.right = baby.thorax
+
+            baby.updateCoords()
+
+        return baby
+
+    def _getPartialCoords(self, bodypart, visited, current_coords, partial_coords):
+        if bodypart and not (bodypart in visited):
+            visited.append(bodypart)
+            partial_coords.append(current_coords)
+
+            if isinstance(bodypart, Torso):
+                self._getPartialCoords(bodypart.head, visited, current_coords + NORTH, partial_coords)
+                self._getPartialCoords(bodypart.right, visited, current_coords + EAST, partial_coords)
+                self._getPartialCoords(bodypart.tail, visited, current_coords + SOUTH, partial_coords)
+                self._getPartialCoords(bodypart.left, visited, current_coords + WEST, partial_coords)
 
     def getCoords(self):
         self.updateCoords()

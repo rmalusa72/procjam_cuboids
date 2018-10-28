@@ -1,5 +1,6 @@
 from app.cryptid.cryptid import Cryptid
-from app.cryptid.appendage import Head, Limb
+from app.cryptid.head import Head
+from app.cryptid.limb import Limb
 from app.cryptid.torso import Torso
 
-__all__ = ["appendage", "assets", "cryptid", "torso"]
+__all__ = ["assets", "cryptid", "head", "limb", "torso"]

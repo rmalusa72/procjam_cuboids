@@ -1,4 +1,4 @@
-import random
+from random import randint, choice
 from numpy import array, array_equal
 from os.path import abspath, dirname
 ##
@@ -47,6 +47,7 @@ CAPTION = 'Proc Party'
 ##
 # Anatomy consts:
 ##
+MAX_TORSOS = 5
 DEFAULT_TORSO = BODY1
 DEFAULT_TORSO_X_OFFSET = 71
 DEFAULT_TORSO_Y_OFFSET = 31

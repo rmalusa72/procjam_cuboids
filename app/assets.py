@@ -8,10 +8,10 @@ __app_path__ = abspath(dirname(__file__))
 ##
 # Sprites
 ##
-HEAD1_F = F"{__app_path__}/cryptid/assets/head1_f.png"
+HEAD1 = F"{__app_path__}/cryptid/assets/head1_"
 BODY1 = F"{__app_path__}/cryptid/assets/body1.png"
-LEG1_B_DOWN = F"{__app_path__}/cryptid/assets/leg1_b_down.png"
-LEG1_F_DOWN = F"{__app_path__}/cryptid/assets/leg1_f_down.png"
+LEG1 = F"{__app_path__}/cryptid/assets/leg1_"
+LEG2 = F"{__app_path__}/cryptid/assets/leg2_"
 
 
 ##

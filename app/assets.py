@@ -1,4 +1,4 @@
-import random
+from random import randint, choice
 from numpy import array, array_equal
 from os.path import abspath, dirname
 ##
@@ -9,9 +9,9 @@ __app_path__ = abspath(dirname(__file__))
 ##
 # Sprites
 ##
-HEAD1_F = F"{__app_path__}/cryptid/assets/head1_f.png"
+HEAD1_E = F"{__app_path__}/cryptid/assets/head1_E.png"
 BODY1 = F"{__app_path__}/cryptid/assets/body1.png"
-LEG1_B_DOWN = F"{__app_path__}/cryptid/assets/leg1_b_down.png"
+LEG1_B_DOWN = F"{__app_path__}/cryptid/assets/leg1_WN.png"
 LEG1_F_DOWN = F"{__app_path__}/cryptid/assets/leg1_f_down.png"
 
 
@@ -38,6 +38,7 @@ CAPTION = 'Proc Party'
 ##
 # Anatomy consts:
 ##
+MAX_TORSOS = 5
 DEFAULT_TORSO = BODY1
 DEFAULT_TORSO_X_OFFSET = 71
 DEFAULT_TORSO_Y_OFFSET = 31

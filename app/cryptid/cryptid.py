@@ -1,7 +1,8 @@
 import pygame
 from app.cryptid.torso import Torso
 from app.assets import *
-from app.cryptid.appendage import Head, Limb
+from app.cryptid.head import Head
+from app.cryptid.limb import Limb
 
 # Gives dest torso deep copies of the children of source torso
 # I'M SO SORRY ABOUT HOW UGLY THIS CODE IS
@@ -69,7 +70,7 @@ class Cryptid:
                     options = [Head, Limb, Torso, Torso, None, None]
                 else:
                     options = [Head, Limb, None, None]
-                child_class = random.choice(options)
+                child_class = choice(options)
                 if child_class:
 
                     coords_filled.append(next_coords)
@@ -92,7 +93,7 @@ class Cryptid:
     # Tries for baby 50 times, returns False if no success
     def reproduce(self, other):
         # Instantiate baby and modifiable copies of parents (to preserve originals)
-        baby = Cryptid(random.choice([self.color, other.color]))
+        baby = Cryptid(choice([self.color, other.color]))
         babysuccess = False
         babytries = 0
 
@@ -105,19 +106,19 @@ class Cryptid:
             # pick one torso from each parent to attempt to connect
             parent1_connection_point = None
             while not isinstance(parent1_connection_point, Torso):
-                parent1_connection_point = random.choice(parent1.body_list)
+                parent1_connection_point = choice(parent1.body_list)
 
             # print("parent1 coords: ")
             # print("parent1 point: " + str(parent1.coords[parent1.body_list.index(parent1_connection_point)]))
 
             parent2_connection_point = None
             while not isinstance(parent2_connection_point, Torso):
-                parent2_connection_point = random.choice(parent2.body_list)
+                parent2_connection_point = choice(parent2.body_list)
 
             # print("parent2 point: " + str(parent2.coords[parent2.body_list.index(parent2_connection_point)]))
 
             # pick a direction to attempt to connect them (vector from parent1 torso to parent2 torso)
-            connection_direction = random.choice([NORTH, EAST, SOUTH, WEST])
+            connection_direction = choice([NORTH, EAST, SOUTH, WEST])
 
             # print("dir: " + str(connection_direction))
 
@@ -266,76 +267,9 @@ class Cryptid:
             for i in range(0, self.num_bodyparts):
                 if layers[i] == cur_layer:
                     x_pos = 0 + (self.coords[i][0][0] + self.coords[i][1][0] - leftmost) * DEFAULT_TORSO_X_OFFSET
-                    sprite.blit(pygame.image.load(getBodypartSprite(self.body_list[i], self.orientation)),
+                    sprite.blit(pygame.image.load(self.body_list[i].get_asset(self.orientation)),
                                 (x_pos, y_pos))
 
         # pygame.image.save(sprite, "testsprite.png")
         self.sprite = sprite
         return sprite
-
-
-def getBodypartSprite(bodypart, creature_orientation):
-
-    if isinstance(bodypart, Torso):
-        return DEFAULT_TORSO
-    elif isinstance(bodypart, Head):
-        head_orientation = bodypart.orientation
-        if array_equal(creature_orientation, EAST):
-            head_orientation = ROT90 @ head_orientation
-        elif array_equal(creature_orientation, SOUTH):
-            head_orientation = ROT180 @ head_orientation
-        elif array_equal(creature_orientation, WEST):
-            head_orientation = ROT270 @ head_orientation
-
-        head_assettype = bodypart.asset_type
-
-        if array_equal(head_orientation, NORTH):
-            head_assettype = head_assettype + "N"
-        elif array_equal(head_orientation, EAST):
-            head_assettype = head_assettype + "E"
-        elif array_equal(head_orientation, SOUTH):
-            head_assettype = head_assettype + "S"
-        elif array_equal(head_orientation, WEST):
-            head_assettype = head_assettype + "W"
-
-        return head_assettype + ".png"
-
-        return "app/cryptid/assets/head1_f.png"
-    elif isinstance(bodypart, Limb):
-        limb_orientation = bodypart.orientation
-        limb_shoulder = bodypart.shoulder
-
-        # Update relative orientation vectors to absolute orientation vectors
-        if array_equal(creature_orientation, EAST):
-            limb_orientation = ROT90 @ limb_orientation
-            limb_shoulder = ROT90 @ limb_shoulder
-        elif array_equal(creature_orientation, SOUTH):
-            limb_orientation = ROT180 @ limb_orientation
-            limb_shoulder = ROT180 @ limb_shoulder
-        elif array_equal(creature_orientation, WEST):
-            limb_orientation = ROT270 @ limb_orientation
-            limb_shoulder = ROT270 @ limb_shoulder
-
-        # Retrieve correct asset
-        limb_assettype = bodypart.asset_type
-
-        # Is there an easier way to get a sprite by limb and shoulder orientation .. a grid?
-        if array_equal(limb_orientation, NORTH):
-            limb_assettype = limb_assettype + "N"
-        elif array_equal(limb_orientation, EAST):
-            limb_assettype = limb_assettype + "E"
-        elif array_equal(limb_orientation, SOUTH):
-            limb_assettype = limb_assettype + "S"
-        elif array_equal(limb_orientation, WEST):
-            limb_assettype = limb_assettype + "W"
-
-        if array_equal(limb_shoulder, NORTH):
-            limb_assettype = limb_assettype + "N"
-        elif array_equal(limb_shoulder, EAST):
-            limb_assettype = limb_assettype + "E"
-        elif array_equal(limb_shoulder, SOUTH):
-            limb_assettype = limb_assettype + "S"
-        elif array_equal(limb_shoulder, WEST):
-            limb_assettype = limb_assettype + "W"
-
-        return limb_assettype + ".png"

@@ -1,4 +1,4 @@
-from app.assets import BODY1
+from app.assets import *
 
 
 #       {head}
@@ -30,5 +30,5 @@ class Torso:
         elif index == 3:
             self.left = thing_to_go_in_socket
 
-    def get_asset(self, orientation):
-        return self.asset_type
+    def asset(self, orientation):
+        return get_asset(self.asset_type)

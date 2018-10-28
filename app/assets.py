@@ -9,10 +9,9 @@ __app_path__ = abspath(dirname(__file__))
 ##
 # Sprites
 ##
-HEAD1_E = F"{__app_path__}/cryptid/assets/head1_E.png"
-BODY1 = F"{__app_path__}/cryptid/assets/body1.png"
-LEG1_B_DOWN = F"{__app_path__}/cryptid/assets/leg1_WN.png"
-LEG1_F_DOWN = F"{__app_path__}/cryptid/assets/leg1_f_down.png"
+HEAD1 = "head1"
+BODY1 = "body1"
+LEG1 = "leg1"
 
 
 ##
@@ -68,3 +67,16 @@ WEST = array([[-1],[0]])
 ##
 def nparray_in_list(nparray, list):
     return any((nparray == l).all() for l in list)
+
+def _orientation_string(o):
+    if array_equal(o, NORTH): return "N"
+    elif array_equal(o, EAST): return "E"
+    elif array_equal(o, SOUTH): return "S"
+    elif array_equal(o, WEST): return "W"
+
+
+def get_asset(type, *orientations):
+    varient = "".join(map(_orientation_string, orientations))
+    if varient != "":
+        varient = "_" + varient
+    return F"{__app_path__}/cryptid/assets/{type}{varient}.png"

@@ -267,7 +267,7 @@ class Cryptid:
             for i in range(0, self.num_bodyparts):
                 if layers[i] == cur_layer:
                     x_pos = 0 + (self.coords[i][0][0] + self.coords[i][1][0] - leftmost) * DEFAULT_TORSO_X_OFFSET
-                    sprite.blit(pygame.image.load(self.body_list[i].get_asset(self.orientation)),
+                    sprite.blit(pygame.image.load(self.body_list[i].asset(self.orientation)),
                                 (x_pos, y_pos))
 
         # pygame.image.save(sprite, "testsprite.png")

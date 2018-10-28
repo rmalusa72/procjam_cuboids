@@ -1,5 +1,5 @@
 # noqa
-
+from app.assets import *
 from app.cryptid.cryptid import Cryptid
 from app.cryptid.torso import Torso
 from app.cryptid.appendage import Head, Limb
@@ -7,6 +7,13 @@ import pygame
 import numpy as np
 
 pop = []
+
+dog = Cryptid(1, orientation = EAST, preset = DOG)
+pygame.image.save(dog.makeSprite(), "dog.png")
+pop.append(dog)
+weird_dog = Cryptid(1, orientation = EAST, preset = WEIRD_DOG)
+pygame.image.save(weird_dog.makeSprite(), "weird_dog.png")
+pop.append(weird_dog)
 
 for i in range(0, 10):
     print("Cryptid index: " + str(i))

@@ -54,15 +54,40 @@ def copy_torso_attributes(source, dest, direction_omitted=None):
 
 
 class Cryptid:
-    def __init__(self, color, orientation=np.array([[0], [1]])):
+    def __init__(self, color, orientation=NORTH, preset=None):
         self.color = color
         self.thorax = Torso()
         self.orientation = orientation
         self.body_list = []
         self.coords = []
         self.num_bodyparts = 1
+
+        if preset == DOG:
+            self.thorax.head = Torso()
+            self.thorax.head.tail = self.thorax
+            self.thorax.head.head = Head(NORTH)
+            self.thorax.head.left = Limb(NORTH, WEST, asset_type = LEG1)
+            self.thorax.head.right = Limb(NORTH, EAST, asset_type = LEG1)
+            self.thorax.left = Limb(NORTH, WEST, asset_type = LEG1)
+            self.thorax.right = Limb(NORTH, EAST, asset_type = LEG1)
+        if preset == WEIRD_DOG:
+            self.thorax.head = Torso()
+            self.thorax.head.tail = self.thorax
+            self.thorax.tail = Torso()
+            self.thorax.tail.head = self.thorax
+            self.thorax.head.right = Head(EAST)
+            self.thorax.head.head = Head(NORTH)
+            self.thorax.left = Limb(NORTH, WEST, asset_type = LEG1)
+            self.thorax.tail.left = Limb(NORTH, WEST, asset_type = LEG1)
+            self.thorax.right = Limb(NORTH, EAST, asset_type = LEG1)
+            self.thorax.tail.right = Limb(NORTH, EAST, asset_type = LEG1)
+
         self.updateCoords()
         self.sprite = None
+
+
+
+
 
     def randomize(self, max_torsos):
         self.thorax = Torso()
@@ -297,11 +322,11 @@ def getBodypartSprite(bodypart, creature_orientation):
     elif isinstance(bodypart, Head):
         head_orientation = bodypart.orientation
         if np.array_equal(creature_orientation, EAST):
-            head_orientation = ROT90 @ head_orientation
+            head_orientation = ROT270 @ head_orientation
         elif np.array_equal(creature_orientation, SOUTH):
             head_orientation = ROT180 @ head_orientation
         elif np.array_equal(creature_orientation, WEST):
-            head_orientation = ROT270 @ head_orientation
+            head_orientation = 90 @ head_orientation
 
         head_assettype = bodypart.asset_type
 
@@ -323,14 +348,14 @@ def getBodypartSprite(bodypart, creature_orientation):
 
         # Update relative orientation vectors to absolute orientation vectors
         if np.array_equal(creature_orientation, EAST):
-            limb_orientation = ROT90 @ limb_orientation
-            limb_shoulder = ROT90 @ limb_shoulder
+            limb_orientation = ROT270 @ limb_orientation
+            limb_shoulder = ROT270 @ limb_shoulder
         elif np.array_equal(creature_orientation, SOUTH):
             limb_orientation = ROT180 @ limb_orientation
             limb_shoulder = ROT180 @ limb_shoulder
         elif np.array_equal(creature_orientation, WEST):
-            limb_orientation = ROT270 @ limb_orientation
-            limb_shoulder = ROT270 @ limb_shoulder
+            limb_orientation = ROT90 @ limb_orientation
+            limb_shoulder = ROT90 @ limb_shoulder
 
         # Retrieve correct asset
         limb_assettype = bodypart.asset_type

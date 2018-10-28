@@ -13,6 +13,13 @@ BODY1 = F"{__app_path__}/cryptid/assets/body1.png"
 LEG1 = F"{__app_path__}/cryptid/assets/leg1_"
 LEG2 = F"{__app_path__}/cryptid/assets/leg2_"
 
+##
+# Cryptid bodyplan presets # 
+## 
+
+DOG = 1
+WEIRD_DOG = 2
+
 
 ##
 # Shared color library

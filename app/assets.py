@@ -9,10 +9,9 @@ __app_path__ = abspath(dirname(__file__))
 ##
 # Sprites
 ##
-HEAD1 = F"{__app_path__}/cryptid/assets/head1_"
-BODY1 = F"{__app_path__}/cryptid/assets/body1.png"
-LEG1 = F"{__app_path__}/cryptid/assets/leg1_"
-LEG2 = F"{__app_path__}/cryptid/assets/leg2_"
+HEAD1 = "head1"
+BODY1 = "body1"
+LEG1 = "leg1"
 
 ##
 # Cryptid bodyplan presets #
@@ -22,7 +21,6 @@ DOG = 1
 WEIRD_DOG = 2
 LEFTWARD_DOG = 3
 FROG = 4
-
 
 ##
 # Shared color library
@@ -77,3 +75,16 @@ WEST = array([[-1],[0]])
 ##
 def nparray_in_list(nparray, list):
     return any((nparray == l).all() for l in list)
+
+def _orientation_string(o):
+    if array_equal(o, NORTH): return "N"
+    elif array_equal(o, EAST): return "E"
+    elif array_equal(o, SOUTH): return "S"
+    elif array_equal(o, WEST): return "W"
+
+
+def get_asset(type, *orientations):
+    varient = "".join(map(_orientation_string, orientations))
+    if varient != "":
+        varient = "_" + varient
+    return F"{__app_path__}/cryptid/assets/{type}{varient}.png"

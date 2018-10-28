@@ -1,5 +1,6 @@
 from random import randint, choice
 from numpy import array, array_equal, copy
+from collections import namedtuple
 from os.path import abspath, dirname
 ##
 # assuming the existance of abs file paths will cause a bug if we use zipping etc

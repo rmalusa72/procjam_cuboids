@@ -1,25 +1,30 @@
 # noqa
 from app.assets import *
+from app.cryptid.presets import *
 from app.cryptid.cryptid import Cryptid
 import pygame
 
 pop = []
 
-dog = Cryptid(1, orientation=EAST, preset=DOG)
+dog = Dog(1)
 pygame.image.save(dog.makeSprite(), "dog.png")
 pop.append(dog)
 
-weird_dog = Cryptid(1, orientation=EAST, preset=WEIRD_DOG)
+weird_dog = WeirdDog(1)
 pygame.image.save(weird_dog.makeSprite(), "weird_dog.png")
 pop.append(weird_dog)
 
-leftward_dog = Cryptid(1, orientation=EAST, preset=LEFTWARD_DOG)
+leftward_dog = LeftwardDog(1)
 pygame.image.save(leftward_dog.makeSprite(), "leftward_dog.png")
 pop.append(leftward_dog)
 
-frog = Cryptid(1, orientation=NORTH, preset=FROG)
+frog = Frog(1)
 pygame.image.save(frog.makeSprite(), "frog.png")
 pop.append(frog)
+
+eyespider = EyeSpider(1)
+pygame.image.save(eyespider.makeSprite(), "eyespider.png")
+pop.append(eyespider)
 
 
 for i in range(0, 10):

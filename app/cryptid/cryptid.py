@@ -42,46 +42,13 @@ def copy_torso_attributes(source, dest, direction_omitted=None):
 
 
 class Cryptid:
-    def __init__(self, color, orientation=NORTH, preset=None):
+    def __init__(self, color, orientation=NORTH):
         self.color = color
         self.thorax = Torso()
         self.orientation = orientation
         self.body_list = []
         self.coords = []
         self.num_bodyparts = 1
-
-        if preset == DOG:
-            self.thorax.head = Torso()
-            self.thorax.head.tail = self.thorax
-            self.thorax.head.head = Head(NORTH)
-            self.thorax.head.left = Limb(NORTH, WEST, asset_type=LEG1)
-            self.thorax.head.right = Limb(NORTH, EAST, asset_type=LEG1)
-            self.thorax.left = Limb(NORTH, WEST, asset_type=LEG1)
-            self.thorax.right = Limb(NORTH, EAST, asset_type=LEG1)
-        if preset == WEIRD_DOG:
-            self.thorax.head = Torso()
-            self.thorax.head.tail = self.thorax
-            self.thorax.tail = Torso()
-            self.thorax.tail.head = self.thorax
-            self.thorax.head.right = Head(EAST)
-            self.thorax.head.head = Head(NORTH)
-            self.thorax.left = Limb(NORTH, WEST, asset_type=LEG1)
-            self.thorax.tail.left = Limb(NORTH, WEST, asset_type=LEG1)
-            self.thorax.right = Limb(NORTH, EAST, asset_type=LEG1)
-            self.thorax.tail.right = Limb(NORTH, EAST, asset_type=LEG1)
-        if preset == LEFTWARD_DOG:
-            self.thorax.left = Torso()
-            self.thorax.left.right = self.thorax
-            self.thorax.left.left = Head(WEST)
-            self.thorax.left.head = Limb(WEST, NORTH, asset_type=LEG1)
-            self.thorax.left.tail = Limb(WEST, SOUTH, asset_type=LEG1)
-            self.thorax.head = Limb(WEST, NORTH, asset_type=LEG1)
-            self.thorax.tail = Limb(WEST, SOUTH, asset_type=LEG1)
-        if preset == FROG:
-            self.thorax.tail = Head(SOUTH)
-            self.thorax.left = Limb(SOUTH, WEST, asset_type=LEG2)
-            self.thorax.right = Limb(SOUTH, EAST, asset_type=LEG2)
-
         self.updateCoords()
         self.sprite = None
         # we should prob use a grid

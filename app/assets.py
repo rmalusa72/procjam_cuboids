@@ -11,20 +11,12 @@ __app_path__ = abspath(dirname(__file__))
 # Sprites
 ##
 HEAD1 = "head1"
+HEAD2 = "head2"
 BODY1 = "body1"
 LEG1 = "leg1"
 LEG2 = "leg2"
 LEG3 = "leg3"
 LEG_TYPES = [LEG1, LEG2, LEG3]
-
-##
-# Cryptid bodyplan presets #
-##
-
-DOG = 1
-WEIRD_DOG = 2
-LEFTWARD_DOG = 3
-FROG = 4
 
 ##
 # Shared color library

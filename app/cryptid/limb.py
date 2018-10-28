@@ -6,7 +6,7 @@ class Limb:
     # asset_type = collection of assets that represent different permutations of the same asset
     # orientation = vector from tail to head
 
-    def __init__(self, shoulder, toes=None, asset_type=LEG1):
+    def __init__(self, shoulder=None, toes=None, asset_type=LEG1):
         self.asset_type = asset_type
         self.toes = toes
         self.shoulder = shoulder

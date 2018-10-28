@@ -1,5 +1,5 @@
 from random import randint, choice
-from numpy import array, array_equal
+from numpy import array, array_equal, copy
 from os.path import abspath, dirname
 ##
 # assuming the existance of abs file paths will cause a bug if we use zipping etc
@@ -12,6 +12,7 @@ __app_path__ = abspath(dirname(__file__))
 HEAD1 = "head1"
 BODY1 = "body1"
 LEG1 = "leg1"
+LEG2 = "leg2"
 
 ##
 # Cryptid bodyplan presets #

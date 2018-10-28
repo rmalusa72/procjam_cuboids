@@ -12,33 +12,33 @@ def copy_torso_attributes(source, dest, direction_omitted=None):
                 dest.head = Torso(source.head.asset_type)
                 copy_torso_attributes(source.head, dest.head, SOUTH)
             if isinstance(source.head, Head):
-                dest.head = Head(source.head.orientation, source.head.asset_type)
+                dest.head = Head(source.head.nose, source.head.asset_type)
             if isinstance(source.head, Limb):
-                dest.head = Limb(source.head.orientation, source.head.shoulder, source.head.asset_type)
+                dest.head = Limb(source.head.shoulder, source.head.toes, source.head.asset_type)
         if not array_equal(direction_omitted, EAST):
             if isinstance(source.right, Torso):
                 dest.right = Torso(source.right.asset_type)
                 copy_torso_attributes(source.right, dest.right, WEST)
             if isinstance(source.right, Head):
-                dest.right = Head(source.right.orientation, source.right.asset_type)
+                dest.right = Head(source.right.nose, source.right.asset_type)
             if isinstance(source.right, Limb):
-                dest.right = Limb(source.right.orientation, source.right.shoulder, source.right.asset_type)
+                dest.right = Limb(source.right.shoulder, source.right.toes, source.right.asset_type)
         if not array_equal(direction_omitted, SOUTH):
             if isinstance(source.tail, Torso):
                 dest.tail = Torso(source.tail.asset_type)
                 copy_torso_attributes(source.tail, dest.tail, NORTH)
             if isinstance(source.tail, Head):
-                dest.tail = Head(source.tail.orientation, source.tail.asset_type)
+                dest.tail = Head(source.tail.nose, source.tail.asset_type)
             if isinstance(source.tail, Limb):
-                dest.tail = Limb(source.tail.orientation, source.tail.shoulder, source.tail.asset_type)
+                dest.tail = Limb(source.tail.shoulder, source.tail.toes, source.tail.asset_type)
         if not array_equal(direction_omitted, WEST):
             if isinstance(source.left, Torso):
                 dest.left = Torso(source.left.asset_type)
                 copy_torso_attributes(source.left, dest.left, EAST)
             if isinstance(source.left, Head):
-                dest.left = Head(source.left.orientation, source.left.asset_type)
+                dest.left = Head(source.left.nose, source.left.asset_type)
             if isinstance(source.left, Limb):
-                dest.left = Limb(source.left.orientation, source.left.shoulder, source.left.asset_type)
+                dest.left = Limb(source.left.shoulder, source.left.toes, source.left.asset_type)
 
 
 class Cryptid:
@@ -209,7 +209,7 @@ class Cryptid:
                 babytries = babytries + 1
                 if babytries >= 20:
                     # Return a copy of parent1 or parent2
-                    identical_parent = random.choice([parent1, parent2])
+                    identical_parent = choice([parent1, parent2])
                     copy_torso_attributes(identical_parent.thorax, baby.thorax)
                     return baby
                 continue

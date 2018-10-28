@@ -104,6 +104,7 @@ class Cryptid:
         self.torsos_left = max_torsos - 1
         self.coords = [DEFAULT_THORAX_COORD]
         self._randomize(self.thorax, DEFAULT_THORAX_COORD)
+        return self
 
     def _randomize(self, current_torso, current_coords):
         self.updateCoords()

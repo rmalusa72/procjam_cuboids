@@ -11,7 +11,7 @@ class Background:
     @classmethod
     def paint(cls):
         Background._fill_screen()
-        Background._draw_ground()
+        # Background._draw_ground()
 
     @classmethod
     def _fill_screen(cls):

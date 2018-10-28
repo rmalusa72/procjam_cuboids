@@ -13,7 +13,7 @@ def initialize():
     pygame.init()
     game.event_manager = EventManager()
     game.gfx = GFX()
+    game.gui = GUI()
     game.cryptid_manager = CryptidManager()
-    Background.paint() # Background paint happens after gfx is initialized
-    game.gui = GUI(game.gfx.screen)
+    game.cryptid_manager.spawn_posse()
     game.event_manager.listen() # Listen must be called last

@@ -217,9 +217,8 @@ class Cryptid:
         if bodypart and not (bodypart in self.body_list):
             self.body_list.append(bodypart)
 
-            for coord in self.coords:
-                if (coord == current_coords).all():
-                    raise Exception("Creature collision with self")
+            if nparray_in_list(current_coords, self.coords):
+                raise Exception("Creature collision with self")
 
             self.coords.append(current_coords)
 

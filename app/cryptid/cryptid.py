@@ -102,7 +102,7 @@ class Cryptid:
                         child = Limb(ROT90 @ socket_vectors[i], socket_vectors[i])
                         current_torso.put_in_socket(i, child)
 
-    # Tries for baby 50 times, returns False if no success
+    # Tries for baby 20 times, returns clone of a parent if can't find valid baby
     def reproduce(self, other):
         # Instantiate baby and modifiable copies of parents (to preserve originals)
         baby = Cryptid(random.choice([self.color, other.color]))
@@ -171,8 +171,11 @@ class Cryptid:
             if coord_conflict:
                 # print("Fuckt up baby ):")
                 babytries = babytries + 1
-                if babytries >= 50:
-                    return False
+                if babytries >= 20:
+                    # Return a copy of parent1 or parent2
+                    identical_parent = random.choice([parent1, parent2])
+                    copy_torso_attributes(identical_parent.thorax, baby.thorax)
+                    return baby
                 continue
 
             # If no coordinate conflict then we can proceed in constructing the baby

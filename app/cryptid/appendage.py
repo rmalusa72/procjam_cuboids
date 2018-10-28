@@ -1,6 +1,7 @@
 from app.assets import HEAD1, LEG1, LEG2
 import random
 
+
 class Head:
 
     # asset_type = collection of assets that represent different permutations of the same asset

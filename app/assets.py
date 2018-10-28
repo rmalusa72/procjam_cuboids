@@ -14,11 +14,13 @@ LEG1 = F"{__app_path__}/cryptid/assets/leg1_"
 LEG2 = F"{__app_path__}/cryptid/assets/leg2_"
 
 ##
-# Cryptid bodyplan presets # 
-## 
+# Cryptid bodyplan presets #
+##
 
 DOG = 1
 WEIRD_DOG = 2
+LEFTWARD_DOG = 3
+FROG = 4
 
 
 ##

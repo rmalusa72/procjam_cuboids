@@ -1,19 +1,26 @@
 # noqa
 from app.assets import *
 from app.cryptid.cryptid import Cryptid
-from app.cryptid.torso import Torso
-from app.cryptid.appendage import Head, Limb
 import pygame
-import numpy as np
 
 pop = []
 
-dog = Cryptid(1, orientation = EAST, preset = DOG)
+dog = Cryptid(1, orientation=EAST, preset=DOG)
 pygame.image.save(dog.makeSprite(), "dog.png")
 pop.append(dog)
-weird_dog = Cryptid(1, orientation = EAST, preset = WEIRD_DOG)
+
+weird_dog = Cryptid(1, orientation=EAST, preset=WEIRD_DOG)
 pygame.image.save(weird_dog.makeSprite(), "weird_dog.png")
 pop.append(weird_dog)
+
+leftward_dog = Cryptid(1, orientation=EAST, preset=LEFTWARD_DOG)
+pygame.image.save(leftward_dog.makeSprite(), "leftward_dog.png")
+pop.append(leftward_dog)
+
+frog = Cryptid(1, orientation=NORTH, preset=FROG)
+pygame.image.save(frog.makeSprite(), "frog.png")
+pop.append(frog)
+
 
 for i in range(0, 10):
     print("Cryptid index: " + str(i))

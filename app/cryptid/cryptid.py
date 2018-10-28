@@ -51,20 +51,35 @@ class Cryptid:
         self.num_bodyparts = 1
         self.updateCoords()
         self.sprite = None
+        # we should prob use a grid
+
+    @classmethod
+    def random(cls, torsos):
+        new = Cryptid()
+        for i in range(0, randint(1, torsos)):
+            new = new.grow()
+        return new
+
+    ##
+    # This adds a torsos to the cryptid
+    ##
+    def grow(self):
+        pass
 
     def randomize(self, max_torsos):
-        self.thorax = Torso()
+        self.thorax = Torso.random()
         self.torsos_left = max_torsos - 1
-        coords_filled = [DEFAULT_THORAX_COORD]
-        self._randomize(self.thorax, DEFAULT_THORAX_COORD, coords_filled)
-        self.updateCoords()
+        self.coords = [DEFAULT_THORAX_COORD]
+        self._randomize(self.thorax, DEFAULT_THORAX_COORD)
 
-    def _randomize(self, current_torso, current_coords, coords_filled):
+    def _randomize(self, current_torso, current_coords):
+        self.updateCoords()
         socket_vectors = [NORTH, EAST, SOUTH, WEST]
 
         for i in range(0, len(socket_vectors)):
+            self.updateCoords()
             next_coords = current_coords + socket_vectors[i]
-            if not nparray_in_list(next_coords, coords_filled):
+            if not nparray_in_list(next_coords, self.coords):
                 # Then corresponding socket is empty
                 if self.torsos_left > 0:
                     options = [Head, Limb, Torso, Torso, None, None]
@@ -73,22 +88,23 @@ class Cryptid:
                 child_class = choice(options)
                 if child_class:
 
-                    coords_filled.append(next_coords)
+                    self.coords.append(next_coords)
 
                     if child_class == Torso:
                         child = Torso()
                         self.torsos_left = self.torsos_left - 1
                         child.put_in_socket((i+2) % 4, current_torso)
                         current_torso.put_in_socket(i, child)
-                        self._randomize(child, next_coords, coords_filled)
+                        self._randomize(child, next_coords)
 
                     elif child_class == Head:
                         child = Head(socket_vectors[i])
                         current_torso.put_in_socket(i, child)
 
                     elif child_class == Limb:
-                        child = Limb(ROT90 @ socket_vectors[i], socket_vectors[i])
+                        child = Limb(socket_vectors[i], ROT90 @ socket_vectors[i])
                         current_torso.put_in_socket(i, child)
+
 
     # Tries for baby 50 times, returns False if no success
     def reproduce(self, other):

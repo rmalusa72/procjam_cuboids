@@ -30,5 +30,5 @@ class Torso:
         elif index == 3:
             self.left = thing_to_go_in_socket
 
-    def asset(self, orientation):
+    def asset(self):
         return get_asset(self.asset_type)

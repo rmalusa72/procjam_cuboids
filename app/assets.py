@@ -68,15 +68,23 @@ WEST = array([[-1],[0]])
 def nparray_in_list(nparray, list):
     return any((nparray == l).all() for l in list)
 
+def _orientation_vector(o):
+    if array_equal(o, NORTH): return ROT0
+    elif array_equal(o, EAST): return ROT90
+    elif array_equal(o, SOUTH): return ROT180
+    elif array_equal(o, WEST): return ROT270
+
 def _orientation_string(o):
     if array_equal(o, NORTH): return "N"
     elif array_equal(o, EAST): return "E"
     elif array_equal(o, SOUTH): return "S"
     elif array_equal(o, WEST): return "W"
 
-
 def get_asset(type, *orientations):
     varient = "".join(map(_orientation_string, orientations))
     if varient != "":
         varient = "_" + varient
     return F"{__app_path__}/cryptid/assets/{type}{varient}.png"
+
+def realign(creature_orientation, *part_orientations):
+    return [_orientation_vector(creature_orientation) @ part for part in part_orientations]

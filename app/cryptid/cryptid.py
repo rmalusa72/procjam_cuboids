@@ -228,6 +228,8 @@ class Cryptid:
                 self._updateCoords(bodypart.right, current_coords - ROT90 @ self.orientation)
                 self._updateCoords(bodypart.tail, current_coords - self.orientation)
                 self._updateCoords(bodypart.left, current_coords + ROT90 @ self.orientation)
+            else:
+                bodypart.align(self.orientation)
 
     def rotate(self, newOrientation):
         self.orientation = newOrientation
@@ -267,7 +269,7 @@ class Cryptid:
             for i in range(0, self.num_bodyparts):
                 if layers[i] == cur_layer:
                     x_pos = 0 + (self.coords[i][0][0] + self.coords[i][1][0] - leftmost) * DEFAULT_TORSO_X_OFFSET
-                    sprite.blit(pygame.image.load(self.body_list[i].asset(self.orientation)),
+                    sprite.blit(pygame.image.load(self.body_list[i].asset()),
                                 (x_pos, y_pos))
 
         # pygame.image.save(sprite, "testsprite.png")

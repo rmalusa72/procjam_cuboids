@@ -13,6 +13,8 @@ HEAD1 = "head1"
 BODY1 = "body1"
 LEG1 = "leg1"
 LEG2 = "leg2"
+LEG3 = "leg3"
+LEG_TYPES = [LEG1, LEG2, LEG3]
 
 ##
 # Cryptid bodyplan presets #

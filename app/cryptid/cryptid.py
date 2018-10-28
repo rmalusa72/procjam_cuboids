@@ -136,7 +136,7 @@ class Cryptid:
                         current_torso.put_in_socket(i, child)
 
                     elif child_class == Limb:
-                        child = Limb(socket_vectors[i], ROT90 @ socket_vectors[i])
+                        child = Limb(socket_vectors[i], ROT90 @ socket_vectors[i], asset_type=choice(LEG_TYPES))
                         current_torso.put_in_socket(i, child)
 
     # Tries for baby 20 times, returns clone of a parent if can't find valid baby

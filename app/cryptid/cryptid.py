@@ -10,6 +10,7 @@ def copy_torso_attributes(source, dest, direction_omitted=None):
         if not array_equal(direction_omitted, NORTH):
             if isinstance(source.head, Torso):
                 dest.head = Torso(source.head.asset_type)
+                dest.head.tail = dest
                 copy_torso_attributes(source.head, dest.head, SOUTH)
             if isinstance(source.head, Head):
                 dest.head = Head(source.head.nose, source.head.asset_type)
@@ -18,6 +19,7 @@ def copy_torso_attributes(source, dest, direction_omitted=None):
         if not array_equal(direction_omitted, EAST):
             if isinstance(source.right, Torso):
                 dest.right = Torso(source.right.asset_type)
+                dest.right.left = dest
                 copy_torso_attributes(source.right, dest.right, WEST)
             if isinstance(source.right, Head):
                 dest.right = Head(source.right.nose, source.right.asset_type)
@@ -26,6 +28,7 @@ def copy_torso_attributes(source, dest, direction_omitted=None):
         if not array_equal(direction_omitted, SOUTH):
             if isinstance(source.tail, Torso):
                 dest.tail = Torso(source.tail.asset_type)
+                dest.tail.head = dest
                 copy_torso_attributes(source.tail, dest.tail, NORTH)
             if isinstance(source.tail, Head):
                 dest.tail = Head(source.tail.nose, source.tail.asset_type)
@@ -34,6 +37,7 @@ def copy_torso_attributes(source, dest, direction_omitted=None):
         if not array_equal(direction_omitted, WEST):
             if isinstance(source.left, Torso):
                 dest.left = Torso(source.left.asset_type)
+                dest.left.right = dest
                 copy_torso_attributes(source.left, dest.left, EAST)
             if isinstance(source.left, Head):
                 dest.left = Head(source.left.nose, source.left.asset_type)
@@ -124,45 +128,46 @@ class Cryptid:
             while not isinstance(parent1_connection_point, Torso):
                 parent1_connection_point = choice(parent1.body_list)
 
-            # print("parent1 coords: ")
-            # print("parent1 point: " + str(parent1.coords[parent1.body_list.index(parent1_connection_point)]))
+            print("parent1 coords: " + str(parent1.coords))
+            print("parent1 point: " + str(parent1.coords[parent1.body_list.index(parent1_connection_point)]))
 
             parent2_connection_point = None
             while not isinstance(parent2_connection_point, Torso):
                 parent2_connection_point = choice(parent2.body_list)
 
-            # print("parent2 point: " + str(parent2.coords[parent2.body_list.index(parent2_connection_point)]))
+            print("parent2 coords: " + str(parent2.coords))
+            print("parent2 point: " + str(parent2.coords[parent2.body_list.index(parent2_connection_point)]))
 
             # pick a direction to attempt to connect them (vector from parent1 torso to parent2 torso)
             connection_direction = choice([NORTH, EAST, SOUTH, WEST])
 
-            # print("dir: " + str(connection_direction))
+            print("dir: " + str(connection_direction))
 
             # Figure out what coordinates are occupied by semi-cryptids when aligned and attached
             parent1partialcoords = [array([[0],[0]])]
             parent2partialcoords = [copy(connection_direction)]
             if not array_equal(connection_direction, NORTH):
                 self._getPartialCoords(parent1_connection_point.head, [parent1_connection_point], NORTH, parent1partialcoords)
-                self._getPartialCoords(parent2_connection_point.tail, [parent2_connection_point], SOUTH, parent2partialcoords)
+                self._getPartialCoords(parent2_connection_point.tail, [parent2_connection_point], connection_direction + SOUTH, parent2partialcoords)
             if not array_equal(connection_direction, EAST):
                 self._getPartialCoords(parent1_connection_point.right, [parent1_connection_point], EAST, parent1partialcoords)
-                self._getPartialCoords(parent2_connection_point.left, [parent2_connection_point], WEST, parent2partialcoords)
+                self._getPartialCoords(parent2_connection_point.left, [parent2_connection_point], connection_direction + WEST, parent2partialcoords)
             if not array_equal(connection_direction, SOUTH):
                 self._getPartialCoords(parent1_connection_point.tail, [parent1_connection_point], SOUTH, parent1partialcoords)
-                self._getPartialCoords(parent2_connection_point.head, [parent2_connection_point], NORTH, parent2partialcoords)
+                self._getPartialCoords(parent2_connection_point.head, [parent2_connection_point], connection_direction + NORTH, parent2partialcoords)
             if not array_equal(connection_direction, WEST):
                 self._getPartialCoords(parent1_connection_point.left, [parent1_connection_point], WEST, parent1partialcoords)
-                self._getPartialCoords(parent2_connection_point.right, [parent2_connection_point], EAST, parent2partialcoords)
+                self._getPartialCoords(parent2_connection_point.right, [parent2_connection_point], connection_direction + EAST, parent2partialcoords)
 
-            # print("parent1 partial coords: " + str(parent1partialcoords))
-            # print("parent2 partial coords: " + str(parent2partialcoords))
+            print("parent1 partial coords: " + str(parent1partialcoords))
+            print("parent2 partial coords: " + str(parent2partialcoords))
 
-            # test1 = Cryptid(1)
-            # test2 = Cryptid(2)
-            # copy_torso_attributes(parent1_connection_point, test1.thorax, connection_direction)
-            # copy_torso_attributes(parent2_connection_point, test2.thorax, ROT180 @ connection_direction)
-            # pygame.image.save(test1.makeSprite(), "test1.png")
-            # pygame.image.save(test2.makeSprite(), "test2.png")
+            test1 = Cryptid(1)
+            test2 = Cryptid(2)
+            copy_torso_attributes(parent1_connection_point, test1.thorax, connection_direction)
+            copy_torso_attributes(parent2_connection_point, test2.thorax, ROT180 @ connection_direction)
+            pygame.image.save(test1.makeSprite(), "test1.png")
+            pygame.image.save(test2.makeSprite(), "test2.png")
 
             coord_conflict = False
 

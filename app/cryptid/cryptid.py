@@ -107,7 +107,7 @@ class Cryptid:
                         current_torso.put_in_socket(i, child)
 
                     elif child_class == Limb:
-                        child = Limb(socket_vectors[i], ROT90 @ socket_vectors[i], asset_type=choice(LEG_TYPES))
+                        child = Limb(socket_vectors[i], ROT90 @ socket_vectors[i])
                         current_torso.put_in_socket(i, child)
 
     # Tries for baby 20 times, returns clone of a parent if can't find valid baby
@@ -292,7 +292,7 @@ class Cryptid:
             for i in range(0, self.num_bodyparts):
                 if layers[i] == cur_layer:
                     x_pos = 0 + (self.coords[i][0][0] + self.coords[i][1][0] - leftmost) * DEFAULT_TORSO_X_OFFSET
-                    sprite.blit(pygame.image.load(self.body_list[i].asset()),
+                    sprite.blit(pygame.image.load(self.body_list[i].asset(self.orientation)),
                                 (x_pos, y_pos))
 
         # pygame.image.save(sprite, "testsprite.png")

@@ -11,7 +11,15 @@ class Head:
         self.nose = nose
 
     def align(self, orientation):
-        [self.nose] = realign(orientation, self.nose)
+        pass # [self.nose] = realign(orientation, self.nose)
 
-    def asset(self):
-        return get_asset(self.asset_type, self.nose)
+    def asset(self, creature_orientation):
+        nose_orientation = self.nose
+        if array_equal(creature_orientation, EAST):
+            nose_orientation = ROT270 @ nose_orientation
+        elif array_equal(creature_orientation, SOUTH):
+            nose_orientation = ROT180 @ nose_orientation
+        elif array_equal(creature_orientation, WEST):
+            nose_orientation = ROT90 @ nose_orientation
+
+        return get_asset(self.asset_type, nose_orientation)

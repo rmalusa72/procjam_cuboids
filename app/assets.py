@@ -42,7 +42,7 @@ CAPTION = 'Proc Party'
 # Anatomy consts:
 ##
 MAX_TORSOS = 5
-DEFAULT_TORSO = BODY1
+DEFAULT_TORSO = F"{__app_path__}/cryptid/assets/body1.png"
 DEFAULT_TORSO_X_OFFSET = 71
 DEFAULT_TORSO_Y_OFFSET = 31
 DEFAULT_TORSO_WIDTH = 179

@@ -14,22 +14,11 @@ class Limb:
         if self.toes is None:
             self.toes = ROT90 @ self.shoulder
 
+    # This is to update the orientation of the limb (not in use)
     def align(self, orientation):
-        pass # self.toes, self.shoulder = realign(orientation, self.toes, self.shoulder)
+        self.toes, self.shoulder = realign(orientation, self.toes, self.shoulder)
 
+    # This gets relative orientation to creature north
     def asset(self, creature_orientation):
-        toe_orientation = self.toes
-        limb_shoulder = self.shoulder
-
-        # Update relative orientation vectors to absolute orientation vectors
-        if array_equal(creature_orientation, EAST):
-            toe_orientation = ROT270 @ toe_orientation
-            limb_shoulder = ROT270 @ limb_shoulder
-        elif array_equal(creature_orientation, SOUTH):
-            toe_orientation = ROT180 @ toe_orientation
-            limb_shoulder = ROT180 @ limb_shoulder
-        elif array_equal(creature_orientation, WEST):
-            toe_orientation = ROT90 @ toe_orientation
-            limb_shoulder = ROT90 @ limb_shoulder
-
-        return get_asset(self.asset_type, toe_orientation, limb_shoulder)
+        toes, shoulder = realign(creature_orientation, self.toes, self.shoulder)
+        return get_asset(self.asset_type, toes, shoulder)

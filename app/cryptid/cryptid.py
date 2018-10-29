@@ -251,8 +251,6 @@ class Cryptid:
                 self._updateCoords(bodypart.right, current_coords - ROT90 @ self.orientation)
                 self._updateCoords(bodypart.tail, current_coords - self.orientation)
                 self._updateCoords(bodypart.left, current_coords + ROT90 @ self.orientation)
-            else:
-                bodypart.align(self.orientation)
 
     def rotate(self, newOrientation):
         self.orientation = newOrientation

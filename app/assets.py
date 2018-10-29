@@ -74,9 +74,9 @@ def nparray_in_list(nparray, list):
 
 def _orientation_vector(o):
     if array_equal(o, NORTH): return ROT0
-    elif array_equal(o, EAST): return ROT90
+    elif array_equal(o, EAST): return ROT270
     elif array_equal(o, SOUTH): return ROT180
-    elif array_equal(o, WEST): return ROT270
+    elif array_equal(o, WEST): return ROT90
 
 def _orientation_string(o):
     if array_equal(o, NORTH): return "N"

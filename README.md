@@ -1,19 +1,18 @@
 # procjam_cuboids
 Genetic monsters for procjam 2018
 
+Please enjoy our adorable cryptids :D
 
-MVP:
-Reproduction
+## Setup
+To install the dependencies use:
+```sh
+$ make install
+```
 
+## Running the game
+To run the game use:
+```sh
+$ make run
+```
 
-Paramenters:
-Using PyGame, create cryptid procedural genorator/renderer.
-
-
-
-Brainstorm
-
-side-scroller graphics with skew perspective
-cube segments that snap. legs and heads that connect via ports
-
-
+_I can only guarantee this works on python 3.6.6 and Darwin 17.7.0_

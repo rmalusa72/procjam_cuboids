@@ -21,3 +21,6 @@ autorun: ## Run app locally and restart when app files change
 
 test: ## Run app's tests
 				pytest
+
+cleanup_tests: ## Cleanup files generated from tests
+				find tests -name "*.png" -delete

@@ -72,7 +72,7 @@ class Cryptid:
 
     def randomize(self, max_torsos):
         self.color = choice(crayons.CRYPTID_COLORS)
-        self.thorax = Torso.random()
+        self.thorax = Torso()
         self.torsos_left = max_torsos - 1
         self.coords = [DEFAULT_THORAX_COORD]
         self._randomize(self.thorax, DEFAULT_THORAX_COORD)
@@ -129,20 +129,20 @@ class Cryptid:
             while not isinstance(parent1_connection_point, Torso):
                 parent1_connection_point = choice(parent1.body_list)
 
-            print("parent1 coords: " + str(parent1.coords))
-            print("parent1 point: " + str(parent1.coords[parent1.body_list.index(parent1_connection_point)]))
+            # print("parent1 coords: " + str(parent1.coords))
+            # print("parent1 point: " + str(parent1.coords[parent1.body_list.index(parent1_connection_point)]))
 
             parent2_connection_point = None
             while not isinstance(parent2_connection_point, Torso):
                 parent2_connection_point = choice(parent2.body_list)
 
-            print("parent2 coords: " + str(parent2.coords))
-            print("parent2 point: " + str(parent2.coords[parent2.body_list.index(parent2_connection_point)]))
+            # print("parent2 coords: " + str(parent2.coords))
+            # print("parent2 point: " + str(parent2.coords[parent2.body_list.index(parent2_connection_point)]))
 
             # pick a direction to attempt to connect them (vector from parent1 torso to parent2 torso)
             connection_direction = choice([NORTH, EAST, SOUTH, WEST])
 
-            print("dir: " + str(connection_direction))
+            # print("dir: " + str(connection_direction))
 
             # Figure out what coordinates are occupied by semi-cryptids when aligned and attached
             parent1partialcoords = [array([[0],[0]])]
@@ -160,15 +160,15 @@ class Cryptid:
                 self._getPartialCoords(parent1_connection_point.left, [parent1_connection_point], WEST, parent1partialcoords)
                 self._getPartialCoords(parent2_connection_point.right, [parent2_connection_point], connection_direction + EAST, parent2partialcoords)
 
-            print("parent1 partial coords: " + str(parent1partialcoords))
-            print("parent2 partial coords: " + str(parent2partialcoords))
+            # print("parent1 partial coords: " + str(parent1partialcoords))
+            # print("parent2 partial coords: " + str(parent2partialcoords))
 
-            test1 = Cryptid(1)
-            test2 = Cryptid(2)
-            copy_torso_attributes(parent1_connection_point, test1.thorax, connection_direction)
-            copy_torso_attributes(parent2_connection_point, test2.thorax, ROT180 @ connection_direction)
-            pygame.image.save(test1.makeSprite(), "test1.png")
-            pygame.image.save(test2.makeSprite(), "test2.png")
+            # test1 = Cryptid()
+            # test2 = Cryptid()
+            # copy_torso_attributes(parent1_connection_point, test1.thorax, connection_direction)
+            # copy_torso_attributes(parent2_connection_point, test2.thorax, ROT180 @ connection_direction)
+            # pygame.image.save(test1.makeSprite(), "test1.png")
+            # pygame.image.save(test2.makeSprite(), "test2.png")
 
             coord_conflict = False
 

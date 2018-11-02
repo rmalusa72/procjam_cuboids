@@ -15,7 +15,7 @@ def test_reproduce():
     baby = dog.reproduce(spider)
     pygame.image.save(baby.makeSprite(), "tests/cryptid/baby.png")
 
-def test_reproduce():
+def test_rotate():
     dog = Dog(orientation=NORTH)
     pygame.image.save(dog.makeSprite(), "tests/cryptid/rotate_north.png")
     dog.rotate(EAST)

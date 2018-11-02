@@ -6,7 +6,7 @@ from app.cryptid.limb import Limb
 
 
 class Dog(Cryptid):
-    def __init__(self, color, orientation=NORTH):
+    def __init__(self, color=crayons.RED, orientation=NORTH):
         super().__init__(color, orientation)
         self.thorax.head = Torso()
         self.thorax.head.tail = self.thorax
@@ -19,7 +19,7 @@ class Dog(Cryptid):
 
 
 class WeirdDog(Cryptid):
-    def __init__(self, color, orientation=NORTH):
+    def __init__(self, color=crayons.BLUERAZZ, orientation=NORTH):
         super().__init__(color, orientation)
         self.thorax.head = Torso()
         self.thorax.head.tail = self.thorax
@@ -35,7 +35,7 @@ class WeirdDog(Cryptid):
 
 
 class LeftwardDog(Cryptid):
-    def __init__(self, color, orientation=NORTH):
+    def __init__(self, color=crayons.RED, orientation=NORTH):
         super().__init__(color, orientation)
         self.thorax.left = Torso()
         self.thorax.left.right = self.thorax
@@ -48,7 +48,7 @@ class LeftwardDog(Cryptid):
 
 
 class Frog(Cryptid):
-    def __init__(self, color, orientation=NORTH):
+    def __init__(self, color=crayons.KEYLIME, orientation=NORTH):
         super().__init__(color, orientation)
         self.thorax.tail = Head(SOUTH)
         self.thorax.left = Limb(WEST, SOUTH, asset_type=LEG2)
@@ -57,7 +57,7 @@ class Frog(Cryptid):
 
 
 class EyeSpider(Cryptid):
-    def __init__(self, color, orientation=NORTH):
+    def __init__(self, color=crayons.SILVERBLUE, orientation=NORTH):
         super().__init__(color, orientation)
         self.thorax.right = Head(EAST, asset_type=HEAD2)
         self.thorax.head = Head(NORTH, asset_type=HEAD2)

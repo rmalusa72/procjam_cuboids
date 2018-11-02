@@ -25,6 +25,15 @@ class crayons:
     CALM_BROWN = (100, 50, 50)
     NIGHT_BLUE = (5, 18, 37)
 
+    # Colors to use as overlay on sprites
+    RED = (0,0,0)
+    KEYLIME = (0,230,0)
+    BLUERAZZ = (0,0,230)
+    SILVERBLUE = (0,230,230)
+    MAGENTA = (200, 0, 200)
+    CRYPTID_COLORS = [RED, RED, RED, KEYLIME, BLUERAZZ, SILVERBLUE, MAGENTA]
+
+
 
 ##
 # Error messages:

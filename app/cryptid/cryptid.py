@@ -46,7 +46,7 @@ def copy_torso_attributes(source, dest, direction_omitted=None):
 
 
 class Cryptid:
-    def __init__(self, color, orientation=NORTH):
+    def __init__(self, color=crayons.RED, orientation=NORTH):
         self.color = color
         self.thorax = Torso()
         self.orientation = orientation
@@ -71,6 +71,7 @@ class Cryptid:
         pass
 
     def randomize(self, max_torsos):
+        self.color = choice(crayons.CRYPTID_COLORS)
         self.thorax = Torso.random()
         self.torsos_left = max_torsos - 1
         self.coords = [DEFAULT_THORAX_COORD]
@@ -103,11 +104,11 @@ class Cryptid:
                         self._randomize(child, next_coords)
 
                     elif child_class == Head:
-                        child = Head(socket_vectors[i])
+                        child = Head(socket_vectors[i], asset_type = choice((HEAD1, HEAD2)))
                         current_torso.put_in_socket(i, child)
 
                     elif child_class == Limb:
-                        child = Limb(socket_vectors[i], ROT90 @ socket_vectors[i])
+                        child = Limb(socket_vectors[i], ROT90 @ socket_vectors[i], asset_type = choice(LEG_TYPES))
                         current_torso.put_in_socket(i, child)
 
     # Tries for baby 20 times, returns clone of a parent if can't find valid baby
@@ -290,8 +291,9 @@ class Cryptid:
             for i in range(0, self.num_bodyparts):
                 if layers[i] == cur_layer:
                     x_pos = 0 + (self.coords[i][0][0] + self.coords[i][1][0] - leftmost) * DEFAULT_TORSO_X_OFFSET
-                    sprite.blit(pygame.image.load(self.body_list[i].asset(self.orientation)),
-                                (x_pos, y_pos))
+                    cur_asset = pygame.image.load(self.body_list[i].asset(self.orientation))
+                    cur_asset.fill(self.color[0:3] + (0,), None, pygame.BLEND_RGBA_ADD)
+                    sprite.blit(cur_asset, (x_pos, y_pos))
 
         # pygame.image.save(sprite, "testsprite.png")
         self.sprite = sprite

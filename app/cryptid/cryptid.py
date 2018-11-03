@@ -337,5 +337,4 @@ class Cryptid:
                     sprite.blit(cur_asset, (x_pos, y_pos))
 
         # pygame.image.save(sprite, "testsprite.png")
-        self.sprite = sprite
         return sprite

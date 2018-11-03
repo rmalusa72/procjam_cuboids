@@ -32,6 +32,9 @@ class Torso:
     def random(cls):
         return Torso(*[_random_appendage(vector) for vector in socket_vectors])
 
+    def random_port(self):
+        return choice([self.head,self.right,self.tail,self.left])
+
     def put_in_socket(self, index, thing_to_go_in_socket):
         if index == 0:
             self.head = thing_to_go_in_socket

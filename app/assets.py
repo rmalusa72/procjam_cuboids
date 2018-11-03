@@ -1,5 +1,6 @@
 from random import randint, choice
 from numpy import array, array_equal, copy
+from copy import deepcopy
 from collections import namedtuple
 from os.path import abspath, dirname
 ##

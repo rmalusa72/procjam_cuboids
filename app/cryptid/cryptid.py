@@ -111,6 +111,47 @@ class Cryptid:
                         child = Limb(socket_vectors[i], ROT90 @ socket_vectors[i], asset_type = choice(LEG_TYPES))
                         current_torso.put_in_socket(i, child)
 
+
+    def mate(self, tlic):
+        baby = deepcopy(self)
+        new_parts = deepcopy(tlic).thorax.random_port()
+        # does not add in correct orientation
+        baby.thorax.left = new_parts
+        baby.trim()
+        return baby
+
+
+    def trim(self):
+        self.body_list = []
+        self.coords = []
+        self._trim(self.thorax, DEFAULT_THORAX_COORD)
+
+
+    def _trim(self, bodypart, current_coords):
+        if bodypart and not (bodypart in self.body_list):
+            self.body_list.append(bodypart)
+            self.coords.append(current_coords)
+
+            if isinstance(bodypart, Torso):
+                self._remove_conflicting_parts(bodypart, current_coords)
+                self._trim(bodypart.head, current_coords + self.orientation)
+                self._trim(bodypart.right, current_coords - ROT90 @ self.orientation)
+                self._trim(bodypart.tail, current_coords - self.orientation)
+                self._trim(bodypart.left, current_coords + ROT90 @ self.orientation)
+
+
+    def _remove_conflicting_parts(self, torso, current_coords):
+        if torso.head and nparray_in_list(current_coords + self.orientation, self.coords):
+            torso.head = None
+        if torso.right and nparray_in_list(current_coords - ROT90 @ self.orientation, self.coords):
+            torso.right = None
+        if torso.tail and nparray_in_list(current_coords - self.orientation, self.coords):
+            torso.tail = None
+        if torso.left and nparray_in_list(current_coords + ROT90 @ self.orientation, self.coords):
+            torso.left = None
+
+
+
     # Tries for baby 20 times, returns clone of a parent if can't find valid baby
     def reproduce(self, other):
         # Instantiate baby and modifiable copies of parents (to preserve originals)

@@ -22,3 +22,7 @@ def test_frog():
 def test_spider():
     spider = EyeSpider()
     pygame.image.save(spider.makeSprite(), "tests/cryptid/spider.png")
+
+def test_longboy():
+    lb = LongBoy()
+    pygame.image.save(lb.makeSprite(), "tests/cryptid/long_boy.png")

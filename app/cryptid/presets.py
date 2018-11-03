@@ -68,5 +68,28 @@ class EyeSpider(Cryptid):
         self.thorax.left.tail = Limb(SOUTH, EAST, asset_type=LEG3)
         self.updateCoords()
 
-
-
+class LongBoy(Cryptid):
+    def __init__(self, color=crayons.RED, orientation=NORTH):
+        super().__init__(color, orientation)
+        self.thorax.left = Limb(WEST, SOUTH, asset_type=LEG1)
+        self.thorax.right = Limb(EAST, SOUTH, asset_type=LEG1)
+        self.thorax.tail = Torso()
+        self.thorax.tail.left = Limb(WEST, SOUTH, asset_type=LEG1)
+        self.thorax.tail.right = Limb(EAST, SOUTH, asset_type=LEG1)
+        self.thorax.tail.tail = Torso()
+        self.thorax.tail.tail.left = Limb(WEST, SOUTH, asset_type=LEG1)
+        self.thorax.tail.tail.right = Limb(EAST, SOUTH, asset_type=LEG1)
+        self.thorax.tail.tail.tail = Torso()
+        self.thorax.tail.tail.tail.left = Limb(WEST, SOUTH, asset_type=LEG1)
+        self.thorax.tail.tail.tail.right = Limb(EAST, SOUTH, asset_type=LEG1)
+        self.thorax.tail.tail.tail.tail = Torso()
+        self.thorax.tail.tail.tail.tail.left = Limb(WEST, SOUTH, asset_type=LEG1)
+        self.thorax.tail.tail.tail.tail.right = Limb(EAST, SOUTH, asset_type=LEG1)
+        self.thorax.tail.tail.tail.tail.tail = Torso()
+        self.thorax.tail.tail.tail.tail.tail.left = Limb(WEST, SOUTH, asset_type=LEG1)
+        self.thorax.tail.tail.tail.tail.tail.right = Limb(EAST, SOUTH, asset_type=LEG1)
+        self.thorax.tail.tail.tail.tail.tail.tail = Torso()
+        self.thorax.tail.tail.tail.tail.tail.tail.left = Limb(WEST, SOUTH, asset_type=LEG1)
+        self.thorax.tail.tail.tail.tail.tail.tail.right = Limb(EAST, SOUTH, asset_type=LEG1)
+        self.thorax.tail.tail.tail.tail.tail.tail.tail = Head(SOUTH, asset_type=HEAD1)
+        self.updateCoords()

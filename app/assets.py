@@ -18,6 +18,7 @@ LEG1 = "leg1"
 LEG2 = "leg2"
 LEG3 = "leg3"
 LEG_TYPES = [LEG1, LEG2, LEG3]
+HEART = F"{__app_path__}/cryptid/assets/heart.png"
 
 ##
 # Shared color library

@@ -10,7 +10,6 @@ class GUI:
         self.layout = pgui.Container(align=-1,valign=-1)
         self.checkbox_values = {}
         self.gui_rects = []
-        self.checkbox_group = pgui.Group(value=[])
 
     def paint(self):
         self._randomize_all_button()
@@ -39,9 +38,9 @@ class GUI:
         self.layout.add(btn1, game.SCREEN[0]-150, 100)
 
     def _select_slot(self, slot):
-        check = pgui.Checkbox(self.checkbox_group, value=slot)
+        check = pgui.Button("Select as Parent")
         check.connect(pgui.CLICK, game.cryptid_manager.select_slot, slot)
-        self.layout.add(check,  slot[0]+135, slot[1]-30)
+        self.layout.add(check,  slot[0]+170, slot[1]-10)
 
     def _randomize_slot(self, slot):
         btn1 = pgui.Button("Randomize Me")

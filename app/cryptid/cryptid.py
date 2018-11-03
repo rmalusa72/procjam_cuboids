@@ -46,7 +46,7 @@ def copy_torso_attributes(source, dest, direction_omitted=None):
 
 
 class Cryptid:
-    def __init__(self, color=crayons.RED, orientation=NORTH):
+    def __init__(self, color=crayons.CLASSIC, orientation=NORTH):
         self.color = color
         self.thorax = Torso()
         self.orientation = orientation

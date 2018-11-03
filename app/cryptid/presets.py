@@ -6,7 +6,7 @@ from app.cryptid.limb import Limb
 
 
 class Dog(Cryptid):
-    def __init__(self, color=crayons.RED, orientation=NORTH):
+    def __init__(self, color=crayons.CLASSIC, orientation=NORTH):
         super().__init__(color, orientation)
         self.thorax.head = Torso()
         self.thorax.head.tail = self.thorax
@@ -35,7 +35,7 @@ class WeirdDog(Cryptid):
 
 
 class LeftwardDog(Cryptid):
-    def __init__(self, color=crayons.RED, orientation=NORTH):
+    def __init__(self, color=crayons.CLASSIC, orientation=NORTH):
         super().__init__(color, orientation)
         self.thorax.left = Torso()
         self.thorax.left.right = self.thorax
@@ -69,7 +69,7 @@ class EyeSpider(Cryptid):
         self.updateCoords()
 
 class LongBoy(Cryptid):
-    def __init__(self, color=crayons.RED, orientation=NORTH):
+    def __init__(self, color=crayons.CLASSIC, orientation=NORTH):
         super().__init__(color, orientation)
         self.thorax.left = Limb(WEST, SOUTH, asset_type=LEG1)
         self.thorax.right = Limb(EAST, SOUTH, asset_type=LEG1)

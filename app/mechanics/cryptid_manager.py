@@ -45,6 +45,8 @@ class CryptidManager:
 
     def select_slot(self, slot):
         self.cryptid_slots[slot][1] = True
+        # Not quite correct
+        self.paint_all_slots()
 
     def add_checkboxes(self):
         for slot, _ in self.cryptid_slots.items():

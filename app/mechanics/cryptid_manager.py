@@ -17,7 +17,17 @@ class CryptidManager:
         self.heart = pygame.image.load(HEART)
 
     def mate_selected(self):
-        pass
+        if len(self.selected_parents) == 2:
+            parent1 = self.cryptid_slots[self.selected_parents[0]]
+            parent2 = self.cryptid_slots[self.selected_parents[1]]
+            baby = parent1.mate(parent2)
+            
+            slot_list = list(self.cryptid_slots.keys())
+            slot_list.remove(self.selected_parents[0])
+            slot_list.remove(self.selected_parents[1])
+            baby_slot = choice(slot_list)
+            self.cryptid_slots[baby_slot] = baby
+            self.paint_all_slots()
 
     def spawn_posse(self):
         self.fill_all_slots()

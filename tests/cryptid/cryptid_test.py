@@ -21,6 +21,24 @@ def test_mate():
     baby = dog.mate(spider)
     pygame.image.save(baby.makeSprite(), "tests/cryptid/baby2.png")
 
+def test_random_mate():
+    dog = Cryptid().randomize(25)
+    spider = Cryptid().randomize(15)
+    baby = dog.mate(spider)
+    pygame.image.save(baby.makeSprite(), "tests/cryptid/baby_random.png")
+
+def test_random_mate_rotated():
+    dog = Cryptid(orientation=NORTH).randomize(25)
+    spider = Cryptid().randomize(15)
+    baby = dog.mate(spider)
+    pygame.image.save(baby.makeSprite(), "tests/cryptid/baby_random_north.png")
+    baby.rotate(EAST)
+    pygame.image.save(baby.makeSprite(), "tests/cryptid/baby_random_east.png")
+    baby.rotate(SOUTH)
+    pygame.image.save(baby.makeSprite(), "tests/cryptid/baby_random_south.png")
+    baby.rotate(WEST)
+    pygame.image.save(baby.makeSprite(), "tests/cryptid/baby_random_west.png")
+
 def test_rotate():
     dog = Dog(orientation=NORTH)
     pygame.image.save(dog.makeSprite(), "tests/cryptid/rotate_north.png")

@@ -114,9 +114,9 @@ class Cryptid:
 
     def mate(self, tlic):
         baby = deepcopy(self)
-        new_parts = deepcopy(tlic).thorax.random_port()
-        # does not add in correct orientation
-        baby.thorax.left = new_parts
+        hip = Torso.random_port_name()
+        new_parts = getattr(deepcopy(tlic).thorax, hip)
+        setattr(baby.thorax, hip, new_parts)
         baby.trim()
         return baby
 
